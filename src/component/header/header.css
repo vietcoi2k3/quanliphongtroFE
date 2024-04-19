@@ -1,0 +1,38 @@
+.listItem{
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.listItem:hover{
+    background-color: var(--blue-color-);
+    border-radius: 20px;
+}
+
+.listSelect{
+    background-color: var(--primary-color-);
+    margin-right: 20px;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 20px;
+    padding-right: 60px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-radius: 8px;
+    border: 0.25px solid gainsboro;
+    cursor: pointer;
+}
+
+.listSelect:hover{
+    border: 1px solid gray  ;
+}
+
+.header{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 10;
+}
+
