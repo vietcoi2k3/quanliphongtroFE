@@ -18,6 +18,7 @@ const Home = () => {
       try {
         let response = await AuthApi.getCityOutStanding()
         console.log(response)
+        setTopCity(response)
       } catch (err) {
         console.log({ err })
       }
