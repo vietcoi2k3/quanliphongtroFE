@@ -3,8 +3,8 @@ import axiosClient from "./AxiosClient"
 
 const AuthApi = {
     getCityOutStanding: () => {
-      console.log("toi la viet");
       const url= "auth/get-city-outstanding";
+      console.log({url})
       return axiosClient.get(url);
     },
     getMotelTop: () => {

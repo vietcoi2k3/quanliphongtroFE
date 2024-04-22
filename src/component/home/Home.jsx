@@ -9,46 +9,52 @@ const Home = () => {
   const [topMotel, setTopMotel] = useState([]);
   const navigate = useNavigate();
 
-  function handleCityClick(id,area) {
+  function handleCityClick(id, area) {
     navigate(`/listMotel-${id}`);
   }
 
   useEffect(() => {
-    AuthApi.getCityOutStanding()
-      .then((response) => setTopCity(response))
-      .catch((error) => console.error("Error fetching top motels:", error));
+    const fetchDataCity = async () => {
+      try {
+        let response = await AuthApi.getCityOutStanding()
+        console.log(response)
+      } catch (err) {
+        console.log({ err })
+      }
+    }
+    fetchDataCity()
   }, []);
 
-  useEffect(() => {
-    AuthApi.getMotelTop()
-      .then((response) => setTopMotel(response))
-      .catch((error) => console.error("Error fetching top motels:", error));
-  }, []);
+  // useEffect(() => {
+    // AuthApi.getMotelTop()
+    //   .then((response) => setTopMotel(response))
+    //   .catch((error) => console.error("Error fetching top motels:", error));
+  // }, []);
 
   return (
-    <div class="py-[20px] md:px-20 xl:px-72">
+    <div className="py-[20px] md:px-20 xl:px-72">
       <div>
         {" "}
-        <h1 class="text-3xl text-center mt-8 font-semibold">
+        <h1 className="text-3xl text-center mt-8 font-semibold">
           Cho Thuê Phòng Trọ, Thuê Nhà Trọ Giá Rẻ, Chính Chủ
         </h1>
-        <p class="text-center text-slate-500 text-base mt-2">
+        <p className="text-center text-slate-500 text-base mt-2">
           Cho thuê phòng trọ, nhà trọ giá rẻ hàng đầu Việt Nam - Cập nhật thông
           tin cho thuê phòng trọ nhanh chóng, chính xác, thông tin xác thực.
         </p>
       </div>
       <div>
-        <h2 class="text-2xl font-semibold mt-12 mb-4">Khu vực nổi bật</h2>
+        <h2 className="text-2xl font-semibold mt-12 mb-4">Khu vực nổi bật</h2>
         <div className="grid grid-cols-3 gap-4 cursor-pointer">
           {topCity.map((city, index) => (
-            <div className="relative" key={index} onClick={()=>handleCityClick(city.id)}>
+            <div className="relative" key={index} onClick={() => handleCityClick(city.id)}>
               <img
                 src={city.cityImage}
                 alt=""
                 width={"100%"}
-                class="h-[100%] overflow-hidden rounded shadow-inner"
+                className="h-[100%] overflow-hidden rounded shadow-inner"
               />
-              <p class="absolute bottom-6 left-6 text-white text-xl font-bold">
+              <p className="absolute bottom-6 left-6 text-white text-xl font-bold">
                 {city.cityName}
               </p>
             </div>
@@ -56,8 +62,8 @@ const Home = () => {
         </div>
       </div>
       <div>
-        <h2 class="text-2xl font-semibold mt-12">Cho thuê phòng trọ nổi bật</h2>
-        <div class=" grid grid-cols-4 gap-4 mt-4">
+        <h2 className="text-2xl font-semibold mt-12">Cho thuê phòng trọ nổi bật</h2>
+        <div className=" grid grid-cols-4 gap-4 mt-4">
           {topMotel.map((motel, index) => (
             <MotelArray
               key={index}
@@ -105,7 +111,7 @@ const Home = () => {
             </div>
           </div>
           <div className="text-center mt-8 ">
-          <button className="w-48 h-14 bg-[var(--blue-color-)] text-white text-xl rounded hover:bg-blue-700">Bắt đầu ngay</button>
+            <button className="w-48 h-14 bg-[var(--blue-color-)] text-white text-xl rounded hover:bg-blue-700">Bắt đầu ngay</button>
           </div>
         </div>
         <div className="">

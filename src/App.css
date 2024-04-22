@@ -28,10 +28,26 @@
   color: #61dafb;
 }
 
+.filter-items :where(.css-dev-only-do-not-override-n0raxz).ant-divider-horizontal {
+  margin: 10px 0 !important;
+}
+
+
+.ant-modal-header {
+  text-align: center;
+  border-bottom: #ebebeb solid 1px !important;
+  padding-bottom: 20px !important;
+}
+
+.ant-slider-mark-text.ant-slider-mark-text-active {
+  width: 100px;
+}
+  
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
