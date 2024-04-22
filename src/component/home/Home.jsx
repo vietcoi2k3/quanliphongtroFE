@@ -18,6 +18,7 @@ const Home = () => {
       try {
         let response = await AuthApi.getCityOutStanding()
         console.log(response)
+        setTopCity(response)
       } catch (err) {
         console.log({ err })
       }
@@ -25,11 +26,11 @@ const Home = () => {
     fetchDataCity()
   }, []);
 
-  // useEffect(() => {
-    // AuthApi.getMotelTop()
-    //   .then((response) => setTopMotel(response))
-    //   .catch((error) => console.error("Error fetching top motels:", error));
-  // }, []);
+  useEffect(() => {
+    AuthApi.getMotelTop()
+      .then((response) => setTopMotel(response))
+      .catch((error) => console.error("Error fetching top motels:", error));
+  }, []);
 
   return (
     <div className="py-[20px] md:px-20 xl:px-72">
