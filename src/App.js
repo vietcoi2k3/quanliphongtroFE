@@ -6,6 +6,8 @@ import Home from "./component/home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListMotel from "./component/listMotel/ListMotel";
 import { ConfigProvider } from 'antd'
+import Login from "./component/login/Login";
+import Register from "./component/register/Register";
 function App() {
   return (
     <ConfigProvider
@@ -19,12 +21,14 @@ function App() {
         <Header />
         <Routes>
           <Route index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/listMotel-:id" element={<ListMotel />} />
         </Routes>
         <Footer />
       </BrowserRouter>
-      </ConfigProvider>
-      );
+    </ConfigProvider>
+  );
 }
 
-      export default App;
+export default App;

@@ -1,0 +1,21 @@
+.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-row{
+    display: block !important;
+}
+
+.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label{
+    text-align: start !important;
+}
+
+.login-container .ant-input-outlined, .login-container .ant-input-password{
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+}
+.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-form-item{
+    margin-bottom: 5px !important;
+}
+
+.login-container .btn-submit{
+    padding: 6px 12px !important;
+    background-color: #157347 !important;
+    height: auto;
+}

@@ -13,24 +13,20 @@ const Home = () => {
     navigate(`/listMotel-${id}`);
   }
 
-  useEffect(() => {
-    const fetchDataCity = async () => {
-      try {
-        let response = await AuthApi.getCityOutStanding()
-        console.log(response)
-        setTopCity(response)
-      } catch (err) {
-        console.log({ err })
-      }
+  const fetchDataCity = async () => {
+    try {
+      let responseCity = await AuthApi.getCityOutStanding()
+      let responseMotelTop = await AuthApi.getMotelTop()
+      setTopMotel(responseMotelTop)
+      setTopCity(responseCity)
+    } catch (err) {
+      console.log({ err })
     }
+  }
+  useEffect(() => {
     fetchDataCity()
   }, []);
 
-  useEffect(() => {
-    AuthApi.getMotelTop()
-      .then((response) => setTopMotel(response))
-      .catch((error) => console.error("Error fetching top motels:", error));
-  }, []);
 
   return (
     <div className="py-[20px] md:px-20 xl:px-72">
@@ -47,7 +43,7 @@ const Home = () => {
       <div>
         <h2 className="text-2xl font-semibold mt-12 mb-4">Khu vực nổi bật</h2>
         <div className="grid grid-cols-3 gap-4 cursor-pointer">
-          {topCity.map((city, index) => (
+          {topCity?.map((city, index) => (
             <div className="relative" key={index} onClick={() => handleCityClick(city.id)}>
               <img
                 src={city.cityImage}
@@ -65,7 +61,7 @@ const Home = () => {
       <div>
         <h2 className="text-2xl font-semibold mt-12">Cho thuê phòng trọ nổi bật</h2>
         <div className=" grid grid-cols-4 gap-4 mt-4">
-          {topMotel.map((motel, index) => (
+          {topMotel?.map((motel, index) => (
             <MotelArray
               key={index}
               img={motel.motelImage}

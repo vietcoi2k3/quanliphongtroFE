@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "./header.css";
 import ModalFilter from "./ModalFilter";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+
+  const navigate = useNavigate()
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterCurrent, setFilterCurrent] = useState('')
   const [result, setResult] = useState({
@@ -276,7 +280,7 @@ const Header = () => {
           </div>
           <div className="listItem">
             <i class="fa-solid fa-right-to-bracket"></i>
-            <a href="" class="mx-1.5">
+            <a href="#" class="mx-1.5" onClick={()=>navigate('/login')}>
               Đăng nhập
             </a>
           </div>

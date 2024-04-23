@@ -4,7 +4,6 @@ import axiosClient from "./AxiosClient"
 const AuthApi = {
     getCityOutStanding (){
       const url= "auth/get-city-outstanding";
-      console.log({url})
       return axiosClient.get(url);
     },
     getMotelTop(){
