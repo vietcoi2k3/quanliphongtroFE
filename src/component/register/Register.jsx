@@ -16,6 +16,7 @@ const Register = () => {
         <h1 className='text-[35px] font-[700]'>Đăng ký tài khoản</h1>
         <Form
             name="basic"
+
             style={{
                 width: 600,
             }}
@@ -69,8 +70,8 @@ const Register = () => {
                     Tạo tài khoản
                 </Button>
             </Form.Item>
-            <p>Bạn đã có tài khoản? <Link onClick={()=>navigate('/login')}>Đăng nhập</Link></p>
         </Form>
+            <p>Bạn đã có tài khoản? <Link onClick={()=>navigate('/login')}>Đăng nhập</Link></p>
     </div>
 
     )

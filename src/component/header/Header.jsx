@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./header.css";
 import ModalFilter from "./ModalFilter";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const Header = () => {
 
   const navigate = useNavigate()
-
+  let location = useLocation()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterCurrent, setFilterCurrent] = useState('')
+  const [displayModalFilter, setDisplayModalFilter] = useState('')
+
+  useEffect(() => {
+
+    if(location.pathname.includes('/user/')){
+      setDisplayModalFilter(false)
+    }else{
+      setDisplayModalFilter(true)
+    }
+  }, [location]);
   const [result, setResult] = useState({
     'loai-nha-dat': {
       name: 'Tất cả',
@@ -295,7 +305,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="section-2" class="flex justify-center shadow">
+      {displayModalFilter && <><div className="section-2" class="flex justify-center shadow">
         {filters.map(item => <div key={item.id} className="listSelect" onClick={() => handleOpenModalFilter(item)}>
           <span class="text-slate-500 text-sm font-medium" >{item.name}<i class="fa-solid fa-chevron-down"></i></span>
           <span>{result[item.id].name}</span>
@@ -303,9 +313,8 @@ const Header = () => {
 
         <div onClick={handleReset} class="my-[10px] text-center flex items-center border-[1px] px-[16px] text-lg rounded-lg cursor-pointer"><i class="fa-solid fa-arrows-rotate mr-1"></i><a>Đặt lại</a></div>
       </div>
-      <p>{isModalOpen}</p>
-
-      <ModalFilter setResult={setResult} filterCurrent={filterCurrent} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <ModalFilter setResult={setResult} filterCurrent={filterCurrent} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /></>}
+      
     </div>
   );
 };

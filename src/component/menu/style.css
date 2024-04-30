@@ -1,0 +1,47 @@
+.manage-postings-container :where(.css-dev-only-do-not-override-n0raxz).ant-select-single .ant-select-selector{
+    border-radius: 0 !important;
+}
+
+.page-manager-right{
+    width: calc(100% - 320px);
+}
+
+.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label{
+    text-align: start !important;
+}
+
+.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-row{
+    display: block;
+}
+
+.post-news-container :where(.css-dev-only-do-not-override-n0raxz).ant-row{
+    display: flex;
+}
+
+.post-news-container :where(.css-dev-only-do-not-override-n0raxz).ant-col-16{
+    max-width: 100% !important;
+}
+
+
+.changepassword-form__fields .ant-upload-list.ant-upload-list-picture-card{
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.changepassword-form__fields .ant-upload.ant-upload-select{
+    height: 30px !important;
+    width: 120px !important;
+}
+.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-input-affix-wrapper,
+.page-manager-right .ant-btn.css-dev-only-do-not-override-n0raxz.ant-btn-primary.btn-submit {
+    padding: 5px 11px;
+    height: 35px;
+}
+
+.changepassword-form__fields{
+    padding: 12px 100px 120px;
+}
+
+.changepassword-form__title{
+    padding: 12px 100px 0;
+}
