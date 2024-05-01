@@ -1,8 +1,8 @@
-.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-row{
+.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-row,.login-container :where(.css-1ia3nbw).ant-row{
     display: block !important;
 }
 
-.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label{
+.login-container :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label, .login-container :where(.css-1ia3nbw).ant-form-item .ant-form-item-label{
     text-align: start !important;
 }
 
