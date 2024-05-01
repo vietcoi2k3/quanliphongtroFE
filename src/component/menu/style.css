@@ -8,11 +8,11 @@
     width: calc(100% - 320px);
 }
 
-.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label{
+.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label,.page-manager-right :where(.css-1ia3nbw).ant-form-item .ant-form-item-label{
     text-align: start !important;
 }
 
-.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-row{
+.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-row,.page-manager-right :where(.css-1ia3nbw).ant-row{
     display: block;
 }
 
