@@ -72,7 +72,7 @@ const MenuUser = () => {
                         },
                     ]}
                 /> */}
-                <div className='max-w-[1050px] mx-auto my-5 bg-[#fff]'>
+                <div className='max-w-[950px] mx-auto my-5 bg-[#fff]'>
                     <Outlet />
 
                 </div>

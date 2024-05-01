@@ -16,9 +16,14 @@ const Home = () => {
   const fetchDataCity = async () => {
     try {
       let responseCity = await AuthApi.getCityOutStanding()
-      let responseMotelTop = await AuthApi.getMotelTop()
-      setTopMotel(responseMotelTop)
-      setTopCity(responseCity)
+      console.log({ responseCity })
+      // let responseMotelTop = await AuthApi.getMotelTop()
+      if (responseCity) {
+        setTopCity(responseCity)
+      }
+      // if (responseMotelTop) {
+      //   setTopMotel(responseMotelTop)
+      // }
     } catch (err) {
       console.log({ err })
     }

@@ -8,6 +8,7 @@ const onFinishFailed = (errorInfo) => {
 const PersonalInformation = () => {
   const navigate = useNavigate()
   const normFile = (e) => {
+    console.log(e)
     if (Array.isArray(e)) {
       return e;
     }

@@ -284,7 +284,7 @@ const Header = () => {
           </div>
           <div className="listItem">
             <i class="fa-solid fa-user-plus"></i>
-            <a href="" class="mx-1.5">
+            <a href="" class="mx-1.5" onClick={()=>navigate('/register')}>
               Đăng kí
             </a>
           </div>
@@ -299,7 +299,7 @@ const Header = () => {
             class="px-[10px] py-[5px] text-lg bg-[var(--red-color-)] text-white rounded-lg"
           >
             <i class="fa-regular fa-pen-to-square"></i>
-            <a href="" class="mx-1.5">
+            <a href="" class="mx-1.5" onClick={()=>navigate('/user/quan-ly-tin')}>
               Đăng tin
             </a>
           </div>

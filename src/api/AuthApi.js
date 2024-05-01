@@ -9,6 +9,14 @@ const AuthApi = {
     getMotelTop(){
       const url = "auth/get-motel-top";
       return axiosClient.get(url);
+    },
+    login(data){
+      const url = "auth/login";
+      return axiosClient.post(url, data)
+    },
+    register(data){
+      const url = "auth/register";
+      return axiosClient.post(url, data)
     }
   };
   

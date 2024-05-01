@@ -13,6 +13,8 @@ import ManagePostings from "./component/menu/ManagePostings";
 import PostNews from "./component/menu/PostNews";
 import PersonalInformation from "./component/menu/PersonalInformation";
 import ChangePassword from "./component/menu/ChangePassword";
+import PrivateRoute from "./component/PrivateRoute";
+import { AuthProvider } from "./AuthContext";
 function App() {
   return (
     <ConfigProvider
@@ -22,23 +24,27 @@ function App() {
         }
       }}
     >
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/listMotel-:id" element={<ListMotel />} />
-          <Route path="/user" element={<MenuUser />} >
-            <Route path="quan-ly-tin" element={<ManagePostings />} />
-            <Route path="dang-tin-moi" element={<PostNews />} />
-            <Route path="thong-tin-ca-nhan" element={<PersonalInformation />} />
-            <Route path="doi-mat-khau" element={<ChangePassword />} />
-          </Route>
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      {/* <AuthProvider> */}
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/listMotel-:id" element={<ListMotel />} />
+            {/* <Route path="/user" element={<PrivateRoute component={MenuUser} />}> */}
+            <Route path="/user" element={<MenuUser />}>
+              <Route path="quan-ly-tin" element={<ManagePostings />} />
+              <Route path="dang-tin-moi" element={<PostNews />} />
+              <Route path="thong-tin-ca-nhan" element={<PersonalInformation />} />
+              <Route path="doi-mat-khau" element={<ChangePassword />} />
+            </Route>
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      {/* </AuthProvider> */}
     </ConfigProvider>
+
   );
 }
 
