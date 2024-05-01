@@ -16,7 +16,7 @@
     display: block;
 }
 
-.post-news-container :where(.css-dev-only-do-not-override-n0raxz).ant-row{
+.post-news-container :where(.css-dev-only-do-not-override-n0raxz).ant-row,.post-news-container .page-manager-right :where(.css-1ia3nbw).ant-row{
     display: flex;
 }
 
