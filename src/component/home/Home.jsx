@@ -10,20 +10,19 @@ const Home = () => {
   const navigate = useNavigate();
 
   function handleCityClick(id, area) {
-    navigate(`/listMotel-${id}`);
+    navigate(`listMotel?lnd=0&kv=${id}&kg=0-0&dt=0-0`);
   }
 
   const fetchDataCity = async () => {
     try {
       let responseCity = await AuthApi.getCityOutStanding()
-      console.log({ responseCity })
-      // let responseMotelTop = await AuthApi.getMotelTop()
+      let responseMotelTop = await AuthApi.getMotelTop()
       if (responseCity) {
         setTopCity(responseCity)
       }
-      // if (responseMotelTop) {
-      //   setTopMotel(responseMotelTop)
-      // }
+      if (responseMotelTop) {
+        setTopMotel(responseMotelTop)
+      }
     } catch (err) {
       console.log({ err })
     }
@@ -69,11 +68,12 @@ const Home = () => {
           {topMotel?.map((motel, index) => (
             <MotelArray
               key={index}
-              img={motel.motelImage}
+              img={motel.imageReturn || 'https://img.thuephongtro.com/images/thumb/2023/11/09/20231109190052-p1fkz.jpg'}
               des={motel.title}
               price={motel.price}
               area={motel.acreage}
               address={motel.address}
+              pagination={false}
             />
           ))}
         </div>

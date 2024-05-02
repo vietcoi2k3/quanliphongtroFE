@@ -5,7 +5,6 @@
 }
 .listItem:hover{
     background-color: var(--blue-color-);
-    color:#fff;
     border-radius: 20px;
 }
 

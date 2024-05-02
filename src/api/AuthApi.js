@@ -17,6 +17,11 @@ const AuthApi = {
     register(data){
       const url = "auth/register";
       return axiosClient.post(url, data)
+    },
+    updateUser(data){
+      const url = "auth/register";
+      return axiosClient.put(url, data)
+
     }
   };
   

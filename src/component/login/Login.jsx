@@ -1,30 +1,36 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Link from 'antd/es/typography/Link';
 import './login.css'
+import { useAuth } from '../../AuthContext';
 import AuthApi from '../../api/AuthApi';
-// import { useAuth } from '../../AuthContext';
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
 };
 const Login = () => {
-    // const { setAuth } = useAuth();
     const navigate = useNavigate()
-
+    const [messageApi, contextHolder] = message.useMessage();
+    const { setAuth } = useAuth()
     const onFinish = async (values) => {
         try {
-            const response = await AuthApi.login({username:values.username, password:values.password});
-            console.log({response})
-            // localStorage.setItem('accessToken', response.data.accessToken);
-            // setAuth(true);
-            // history.push('/dashboard');
+            const response = await AuthApi.login({ username: values.username, password: values.password });
+            localStorage.setItem('access_token', response.jwttoken);
+            localStorage.setItem('user', JSON.stringify(response));
+            messageApi.open({
+                type: 'success',
+                content: 'Đăng nhập thành công',
+            });
+            navigate('/')
         } catch (error) {
-            console.error('Login failed:', error);
-            alert('Invalid credentials. Please try again.');
+            messageApi.open({
+                type: 'warning',
+                content:'Đăng nhập không thành công',
+            });
         }
     };
     return (<div className='w-[100%] login-container flex justify-center items-center py-8 flex-col'>
+        {contextHolder}
         <h1 className='text-[35px] font-[700]'>Đăng nhập</h1>
         <Form
             name="basic"

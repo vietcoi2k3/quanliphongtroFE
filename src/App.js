@@ -24,16 +24,15 @@ function App() {
         }
       }}
     >
-      {/* <AuthProvider> */}
+      <AuthProvider>
         <BrowserRouter>
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/listMotel-:id" element={<ListMotel />} />
-            {/* <Route path="/user" element={<PrivateRoute component={MenuUser} />}> */}
-            <Route path="/user" element={<MenuUser />}>
+            <Route path="/listMotel" element={<ListMotel />} />
+            <Route path="/user" element={<PrivateRoute component={MenuUser} />}>
               <Route path="quan-ly-tin" element={<ManagePostings />} />
               <Route path="dang-tin-moi" element={<PostNews />} />
               <Route path="thong-tin-ca-nhan" element={<PersonalInformation />} />
@@ -42,7 +41,7 @@ function App() {
           </Routes>
           <Footer />
         </BrowserRouter>
-      {/* </AuthProvider> */}
+      </AuthProvider>
     </ConfigProvider>
 
   );

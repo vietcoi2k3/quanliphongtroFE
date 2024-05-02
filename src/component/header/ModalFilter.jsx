@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { Radio, Modal, Row, Col, Divider, Slider } from 'antd';
-const ModalFilter = ({ filterCurrent, isModalOpen, setIsModalOpen, setResult }) => {
+
+import { useNavigate } from 'react-router-dom';
+
+const ModalFilter = ({ filterCurrent, isModalOpen, setIsModalOpen, setResult, result }) => {
     const [value, setValue] = useState(1);
     const [filterData, setFilterData] = useState()
     const [haveSlider, setHaveSlider] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState()
+    const navigate = useNavigate()
+
     useEffect(() => {
         setFilterData(filterCurrent)
+        setValue(result[filterCurrent.id]?.value)
         setHaveSlider(filterCurrent.id === 'khoang-gia' || filterCurrent.id === 'dien-tich')
-    }, [filterCurrent])
+    }, [filterCurrent, result])
     const onChange = (e) => {
         let selectedFilter = filterData.options.find(item => item.value === e.target.value)
         setValue(e.target.value);
         setSelectedFilter(selectedFilter)
     };
     const handleSave = () => {
-        setResult(prev => {
-            return{
-                ...prev,
-                [filterData.id]:selectedFilter
-            }
-        })
+        let resultFilter = { ...result, [filterData.id]: selectedFilter }
+        setResult(resultFilter)
+        console.log({ resultFilter })
+        navigate(`listMotel?lnd=${resultFilter?.["loai-nha-dat"].value}&kv=${resultFilter?.["khu-vuc"].value}&kg=${resultFilter?.["khoang-gia"].value}&dt=${resultFilter?.["dien-tich"].value}`)
+
         setIsModalOpen(false)
     }
     return (

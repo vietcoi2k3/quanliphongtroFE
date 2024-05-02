@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, message, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Link from 'antd/es/typography/Link';
 import './register.css'
-// import { useAuth } from '../../AuthContext';
 import AuthApi from '../../api/AuthApi';
 
 const onFinishFailed = (errorInfo) => {
@@ -11,22 +10,26 @@ const onFinishFailed = (errorInfo) => {
 };
 const Register = () => {
     const navigate = useNavigate()
-
-    // const { setAuth } = useAuth();
-
+    const [messageApi, contextHolder] = message.useMessage();
     const onFinish = async(values) => {
         try {
             const response = await AuthApi.register(values)
             console.log({ response })
             localStorage.setItem('access_token', response.jwttoken);
-            // setAuth(true);
             navigate('/');
+            messageApi.open({
+                type: 'success',
+                content: 'Đăng ký thành công',
+              });
         } catch (error) {
-            console.error('Login failed:', error);
-            alert('Invalid credentials. Please try again.');
+            messageApi.open({
+                type: 'warning',
+                content:'Đăng ký không thành công',
+              });
         }
     };
     return (<div className='w-[100%] login-container flex justify-center items-center py-8 flex-col'>
+        {contextHolder}
         <h1 className='text-[35px] font-[700]'>Đăng ký tài khoản</h1>
         <Form
             name="basic"

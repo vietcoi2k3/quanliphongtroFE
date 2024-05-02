@@ -1,7 +1,8 @@
 import React from 'react'
-import { FormOutlined, UserOutlined, CopyOutlined, BarsOutlined, LockOutlined } from '@ant-design/icons';
-import { Menu, Avatar, Button, Breadcrumb } from 'antd';
+import { FormOutlined, UserOutlined, CopyOutlined, BarsOutlined, LockOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Menu, Avatar, Button, Breadcrumb, Divider } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../AuthContext';
 import './style.css'
 function getItem(label, key, icon, children, type) {
     return {
@@ -19,20 +20,28 @@ const items = [
     getItem('Đổi mật khẩu', 'doi-mat-khau', <LockOutlined />),
 ];
 const MenuUser = () => {
+    
     const navigate = useNavigate()
+    const { auth, setAuth } = useAuth()
     const onClick = (e) => {
         if (e.key) {
             navigate(e.key)
         }
 
     };
-
+    const handleLogout = () => {
+        localStorage.clear();
+        setAuth('')
+        navigate("/")
+    }
     return (
         <section className='flex'>
+            
             <div className='w-[320px] p-5'>
                 <div className='flex flex-row justify-between'>
                     <Avatar size={60} icon={<UserOutlined />} />
-                    <h1 className='text-[26px] font-[600] ml-3'>Nguyễn Ngọc Huyền</h1>
+                    <h1 className='text-[26px] font-[600] ml-3'>{auth.
+                        accountName || 'Người dùng'}</h1>
                 </div>
                 <div className='pb-2 px-2 p-4 bg-[#d9d9d9] my-4'>
                     <div className='flex justify-between w-[100%] rounded-md'>
@@ -41,7 +50,7 @@ const MenuUser = () => {
                     </div>
                     <div className='bg-[#fff] my-3 rounded-lg p-3'>
                         <p>Mã tài khoản</p>
-                        <div className='flex justify-between'>
+                        <div className='flex justify-between text-start border-none'>
                             <p>114634</p>
                             <CopyOutlined />
                         </div>
@@ -58,6 +67,10 @@ const MenuUser = () => {
                     mode="inline"
                     items={items}
                 />
+                <Divider />
+                <Button className='w-[100%]' icon={<LogoutOutlined />} onClick={handleLogout}>
+                    Search
+                </Button>
             </div>
             <div className='bg-[#F1F1F1] page-manager-right'>
                 {/* <Breadcrumb
@@ -74,7 +87,6 @@ const MenuUser = () => {
                 /> */}
                 <div className='max-w-[950px] mx-auto my-5 bg-[#fff]'>
                     <Outlet />
-
                 </div>
             </div>
         </section>
