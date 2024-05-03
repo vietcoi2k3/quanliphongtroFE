@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Button, Form, Input, Upload, Select, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import ProvinceApi from '../../api/ProvinceApi';
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
@@ -20,7 +21,23 @@ const options = [
     label: 'yiminghe',
   },
 ]
+const province = [
+  {
+    value: "01",
+    label: "Thành phố Hà Nội",
+  },
+  {
+    value: "79",
+    label: "Thành phố Hồ Chí Minh",
+  },
+  {
+    value: "48",
+    label: "Thành phố Đà Nẵng",
+  },
+]
 const PostNews = () => {
+  const [districts, setDistricts] = useState([])
+  const [ward, setWard] = useState([])
   const navigate = useNavigate()
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -31,6 +48,21 @@ const PostNews = () => {
   const onFinish = (values) => {
     console.log('Success:', values);
   };
+  const handleChangeSelect = async(source, id) => {
+    try{
+      if(source == 'province'){
+        let dataDistrict = await ProvinceApi.getDistrictByProvince(id)
+        setDistricts(dataDistrict.data.results)
+        console.log(dataDistrict.data.results)
+      }
+      if(source == 'district'){
+        let dataWard = await ProvinceApi.getWardByDistrict(id)
+        setWard(dataWard.data.results)
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
   return (<>
     <div className='post-news-container px-6 pb-6'>
       <Form
@@ -44,7 +76,6 @@ const PostNews = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-
       >
         <h1 className='text-[22px] font-[500] pt-[12px]'>Khu vực</h1>
         <Row gutter={32}>
@@ -54,7 +85,7 @@ const PostNews = () => {
               name="province"
               rules={[{ required: true, message: 'Vui lòng chọn tỉnh/thành phố' }]}
             >
-              <Select placeholder='chọn tỉnh/thành phố' style={{ width: '100%' }} options={options} />
+              <Select placeholder='chọn tỉnh/thành phố' style={{ width: '100%' }} options={province} onChange={(e) => handleChangeSelect('province', e)}/>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -63,7 +94,7 @@ const PostNews = () => {
               name="district"
               rules={[{ required: true, message: 'Vui lòng chọn quận/huyện' }]}
             >
-              <Select placeholder='Chọn quận/huyện' style={{ width: '100%' }} options={options} />
+              <Select placeholder='Chọn quận/huyện' style={{ width: '100%' }} options={districts.map(item => ({value:item.district_id, label:item.district_name}))} onChange={(e) => handleChangeSelect('district', e)} />
             </Form.Item>
           </Col>
         </Row>
@@ -74,7 +105,7 @@ const PostNews = () => {
               name="ward"
               rules={[{ required: true, message: 'Vui lòng chọn phường/xã' }]}
             >
-              <Select placeholder='Chọn phường/xã' style={{ width: '100%' }} options={options} />
+              <Select placeholder='Chọn phường/xã' style={{ width: '100%' }} options={ward.map(item => ({value:item.ward_id, label:item.ward_name}))} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -87,19 +118,6 @@ const PostNews = () => {
             </Form.Item>
           </Col>
         </Row>
-
-
-
-        <Form.Item
-          label="Địa chỉ chính xác"
-          name="address"
-        >
-          <TextArea
-            placeholder="Địa chỉ chính xác..."
-            autoSize={{ minRows: 2, maxRows: 6 }}
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item

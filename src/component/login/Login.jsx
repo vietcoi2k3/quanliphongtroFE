@@ -17,6 +17,7 @@ const Login = () => {
             const response = await AuthApi.login({ username: values.username, password: values.password });
             localStorage.setItem('access_token', response.jwttoken);
             localStorage.setItem('user', JSON.stringify(response));
+            setAuth(response)
             messageApi.open({
                 type: 'success',
                 content: 'Đăng nhập thành công',

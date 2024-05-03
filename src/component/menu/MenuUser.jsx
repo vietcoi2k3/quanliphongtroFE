@@ -50,7 +50,7 @@ const MenuUser = () => {
                     </div>
                     <div className='bg-[#fff] my-3 rounded-lg p-3'>
                         <p>Mã tài khoản</p>
-                        <div className='flex justify-between text-start border-none'>
+                        <div className='flex justify-between'>
                             <p>114634</p>
                             <CopyOutlined />
                         </div>
@@ -68,8 +68,8 @@ const MenuUser = () => {
                     items={items}
                 />
                 <Divider />
-                <Button className='w-[100%]' icon={<LogoutOutlined />} onClick={handleLogout}>
-                    Search
+                <Button className='w-[100%] text-start border-none' icon={<LogoutOutlined />} onClick={handleLogout}>
+                    Đăng xuất
                 </Button>
             </div>
             <div className='bg-[#F1F1F1] page-manager-right'>

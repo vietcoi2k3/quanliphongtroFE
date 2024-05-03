@@ -19,9 +19,8 @@ const AuthApi = {
       return axiosClient.post(url, data)
     },
     updateUser(data){
-      const url = "auth/register";
+      const url = "user/update-user";
       return axiosClient.put(url, data)
-
     }
   };
   

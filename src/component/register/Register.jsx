@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Link from 'antd/es/typography/Link';
 import './register.css'
 import AuthApi from '../../api/AuthApi';
+import { useAuth } from '../../AuthContext';
 
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -11,10 +12,11 @@ const onFinishFailed = (errorInfo) => {
 const Register = () => {
     const navigate = useNavigate()
     const [messageApi, contextHolder] = message.useMessage();
+    const {setAuth} = useAuth()
     const onFinish = async(values) => {
         try {
             const response = await AuthApi.register(values)
-            console.log({ response })
+            setAuth( response )
             localStorage.setItem('access_token', response.jwttoken);
             navigate('/');
             messageApi.open({
