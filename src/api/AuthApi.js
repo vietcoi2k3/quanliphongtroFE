@@ -18,9 +18,15 @@ const AuthApi = {
       const url = "auth/register";
       return axiosClient.post(url, data)
     },
-    updateUser(data){
-      const url = "user/update-user";
-      return axiosClient.put(url, data)
+    updateUser: (formData) => {
+      const accessToken = localStorage.getItem('access_token');
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+  
+      return axiosClient.put('user/update-user', formData, config);
     }
   };
   
