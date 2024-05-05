@@ -35,7 +35,7 @@ const ManagePostings = () => {
         setOptions(prev => prev.map(item => item.name === name ? {...item, checked:true}:{...item, checked:false}))
     }
     const ButtonOption = ({ name, count, checked }) => {
-        return(<div className='rounded-lg p-2 cursor-pointer' onClick={()=>clickBtnOption(name)} style={{backgroundColor:checked?'#00008b':'#ffc0cb', color:checked?'#fff':'#000'}}>
+        return(<div className='rounded-lg p-2 cursor-pointer text-[14px]' onClick={()=>clickBtnOption(name)} style={{backgroundColor:checked?'#00008b':'#ffc0cb', color:checked?'#fff':'#000'}}>
             <p>{name} ({count})</p>
         </div>)
     }

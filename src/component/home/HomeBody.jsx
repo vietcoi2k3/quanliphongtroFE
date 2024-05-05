@@ -4,7 +4,7 @@ import "./home.css";
 import MotelArray from "../../commons/motelArray/MotelArray";
 import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const HomeBody = () => {
   const [topCity, setTopCity] = useState([]);
   const [topMotel, setTopMotel] = useState([]);
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const Home = () => {
 
 
   return (
-    <div className="py-[20px] md:px-20 xl:px-72">
+    <div>
       <div>
         {" "}
         <h1 className="text-3xl text-center mt-8 font-semibold">
@@ -67,6 +67,7 @@ const Home = () => {
         <div className=" grid grid-cols-4 gap-4 mt-4">
           {topMotel?.map((motel, index) => (
             <MotelArray
+            id={motel.id}
               key={index}
               img={motel.imageReturn || 'https://img.thuephongtro.com/images/thumb/2023/11/09/20231109190052-p1fkz.jpg'}
               des={motel.title}
@@ -113,7 +114,7 @@ const Home = () => {
             </div>
           </div>
           <div className="text-center mt-8 ">
-            <button className="w-48 h-14 bg-[var(--blue-color-)] text-white text-xl rounded hover:bg-blue-700">Bắt đầu ngay</button>
+            <button className="w-48 h-14 bg-[#0d6efd] text-white text-xl rounded hover:bg-blue-700">Bắt đầu ngay</button>
           </div>
         </div>
         <div className="">
@@ -127,4 +128,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeBody;

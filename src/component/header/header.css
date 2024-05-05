@@ -1,6 +1,6 @@
 .listItem{
     padding: 5px 10px;
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
 }
 .listItem:hover{
@@ -11,7 +11,7 @@
 .listSelect{
     background-color: var(--primary-color-);
     margin-right: 20px;
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 5px 20px;

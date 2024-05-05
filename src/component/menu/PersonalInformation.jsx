@@ -11,9 +11,12 @@ const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 const PersonalInformation = () => {
-  const { auth } = useAuth()
+
+  const [loading, setLoading] = useState(false)
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const { auth, setAuth } = useAuth()
   const [img, setImg] = useState()
-  console.log({ auth })
   const navigate = useNavigate()
   const normFile = (e) => {
     console.log(e)
@@ -23,29 +26,54 @@ const PersonalInformation = () => {
     }
     return e?.fileList;
   };
+
   const onFinish = async (values) => {
+    setLoading(true)
     const formData = new FormData();
     formData.append("accountName", values.accountName);
     formData.append("email", values.email);
     formData.append("phoneNumber", values.phoneNumber);
     formData.append('img', img);
-    console.log(img)
     try {
       let response = await AuthApi.updateUser(formData)
-      console.log({ response })
-      // formData.forEach((value, key) => {
-      //   console.log(`${key}: ${value}`);
-      // });
+      if (response) {
+        setAuth({ ...auth, ...response })
+        localStorage.setItem('user', JSON.stringify({ ...auth, ...response }));
+      }
+      setLoading(false)
+      messageApi.open({
+        type: 'success',
+        content: 'Cập nhật thành công',
+      });
+
     } catch (err) {
+      setLoading(false)
+      messageApi.open({
+        type: 'error',
+        content: 'Cập nhật thất bại',
+      });
+
       console.log({ err })
     }
   };
   return (<>
+    {contextHolder}
+
     <h1 className='text-[25px] font-[500] px-[100px] pt-[12px]'>Thông tin cá nhân</h1>
     <div className='changepassword-form__fields'>
       <Form
         name="basic"
-        initialValues={{ ...auth }}
+        disabled={loading}
+        initialValues={{
+          ...auth, imgReturn: [
+            {
+              uid: '-1',
+              name: 'defaultImage.png',
+              status: 'done',
+              url: auth.imgReturn,
+            },
+          ]
+        }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -105,8 +133,8 @@ const PersonalInformation = () => {
         >
           <p onClick={() => navigate('/user/doi-mat-khau')}>Bấm vào đây để thay đổi mật khẩu</p>
         </Form.Item>
-        <Form.Item label="Ảnh đại diện" valuePropName="fileList" name='img' getValueFromEvent={normFile} rules={[{ required: true, message: 'Vui lòng chọn ảnh đại diện!' }]}>
-          <Upload listType="picture-card" maxCount={1} beforeUpload={() => { return false }}>
+        <Form.Item label="Ảnh đại diện" valuePropName="fileList" name='imgReturn' getValueFromEvent={normFile} rules={[{ required: true, message: 'Vui lòng chọn ảnh đại diện!' }]}>
+          <Upload beforeUpload={() => false} listType="picture-card" maxCount={1} >
             <button
               style={{
                 border: 0,
@@ -124,7 +152,7 @@ const PersonalInformation = () => {
           </Upload>
         </Form.Item>
         <Form.Item className="my-4">
-          <Button type="primary" style={{ width: '100%' }} htmlType="submit" className='btn-submit'>
+          <Button loading={loading} type="primary" style={{ width: '100%' }} htmlType="submit" className='btn-submit'>
             Cập nhật
           </Button>
         </Form.Item>

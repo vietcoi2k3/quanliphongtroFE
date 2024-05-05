@@ -10,6 +10,10 @@ const MotelApi = {
       const url= '/auth/paing-motel';
       return axiosClient.post(url, data);
     },
+    addMotel (data){
+      const url= '/user/add-motel';
+      return axiosClient.post(url, data);
+    },
   };
   
   export default MotelApi;

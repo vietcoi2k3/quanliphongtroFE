@@ -27,6 +27,10 @@ const ModalFilter = ({ filterCurrent, isModalOpen, setIsModalOpen, setResult, re
         navigate(`listMotel?lnd=${resultFilter?.["loai-nha-dat"].value}&kv=${resultFilter?.["khu-vuc"].value}&kg=${resultFilter?.["khoang-gia"].value}&dt=${resultFilter?.["dien-tich"].value}`)
 
         setIsModalOpen(false)
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" 
+          });
     }
     return (
         <Modal title={filterData?.name} open={isModalOpen} onCancel={() => setIsModalOpen(false)} onOk={handleSave} width={700}>

@@ -4,7 +4,8 @@ import { AppstoreOutlined } from '@ant-design/icons';
 import ModalFilter from "./ModalFilter";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../../AuthContext'
-
+import Logo from '../../assets/logo.jpg'
+import { Space } from "antd";
 const filters = [
   {
     name: 'Loại nhà đất',
@@ -232,13 +233,29 @@ const Header = () => {
   })
 
   useEffect(() => {
-    // if(lnd || kv || kg || dt){
-    //   let resultDefault = result
-    //   filters.find(filter => filter.id == "khu-vuc")
-    //   let 
-    //   result["khu-vuc"] = .options
-    //   let optionFind = filters.find(filter => filter.id == item.)
-    // }
+    const selectedFilters = {};
+    if (lnd && kv && kg && dt) {
+
+      filters.forEach(filter => {
+        switch (filter.id) {
+          case 'loai-nha-dat':
+            selectedFilters['loai-nha-dat'] = filter.options.find(option => option.value === parseInt(lnd));
+            break;
+          case 'khu-vuc':
+            selectedFilters['khu-vuc'] = filter.options.find(option => option.value === parseInt(kv));
+            break;
+          case 'khoang-gia':
+            selectedFilters['khoang-gia'] = filter.options.find(option => option.value === kg);
+            break;
+          case 'dien-tich':
+            selectedFilters['dien-tich'] = filter.options.find(option => option.value === dt);
+            break;
+          default:
+            break;
+        }
+      });
+      setResult(selectedFilters)
+    }
     if (location.pathname.includes('/user/')) {
       setDisplayModalFilter(false)
     } else {
@@ -280,17 +297,21 @@ const Header = () => {
         className="section-1 flex justify-between py-2.5 px-8 border-b-[1px]"
       >
         <div className="flex">
-          <div className="listItem">Cho thuê phòng trọ</div>
-          <div className="listItem">Cho thuê nhà ở</div>
-          <div className="listItem">Cho thuê căn hộ</div>
-          <div className="listItem">Tìm người ở ghép</div>
+          <div onClick={() => navigate('/')}><img className="w-[auto] h-[50px] cursor-pointer" src={Logo} /></div>
+          <Space>
+
+            <div className="listItem">Cho thuê phòng trọ</div>
+            <div className="listItem">Cho thuê nhà ở</div>
+            <div className="listItem">Cho thuê căn hộ</div>
+            <div className="listItem">Tìm người ở ghép</div>
+          </Space>
         </div>
-        <div className="flex">
+        <Space>
           <div className="listItem">
             <i className="fa-regular fa-bell"></i>
           </div>
           {auth ? <div className="listItem flex">
-          <AppstoreOutlined className="text-[25px]" />
+            <AppstoreOutlined className="text-[25px]" />
             <a href="" className="mx-1.5" onClick={() => navigate('/user/quan-ly-tin')}>
               Trang quản lý
             </a>
@@ -300,35 +321,35 @@ const Header = () => {
               Đăng kí
             </a>
           </div>
-              <div className="listItem">
-                <i className="fa-solid fa-right-to-bracket"></i>
-                <a href="#" className="mx-1.5" onClick={() => navigate('/login')}>
-                  Đăng nhập
-                </a>
-              </div></>}
-
-            <div
-              className="px-[10px] py-[5px] text-lg bg-[var(--red-color-)] text-white rounded-lg"
-            >
-              <i className="fa-regular fa-pen-to-square"></i>
-              <a href="" className="mx-1.5" onClick={() => navigate('/user/quan-ly-tin')}>
-                Đăng tin
+            <div className="listItem">
+              <i className="fa-solid fa-right-to-bracket"></i>
+              <a href="#" className="mx-1.5" onClick={() => navigate('/login')}>
+                Đăng nhập
               </a>
-            </div>
+            </div></>}
+
+          <div
+            className="px-[10px] py-[5px] bg-[var(--red-color-)] text-white rounded-lg"
+          >
+            <i className="fa-regular fa-pen-to-square"></i>
+            <a href="" className="mx-1.5 text-[14px]" onClick={() => navigate('/user/quan-ly-tin')}>
+              Đăng tin
+            </a>
           </div>
-        </div>
-        {displayModalFilter && <><div className="section-2 flex justify-center shadow">
-          {filters.map(item => <div key={item.id} className="listSelect" onClick={() => handleOpenModalFilter(item)}>
-            <span className="text-slate-500 text-sm font-medium" >{item.name}<i className="fa-solid fa-chevron-down"></i></span>
-            <span>{result[item.id].name}</span>
-          </div>)}
-
-          <div onClick={handleReset} className="my-[10px] text-center flex items-center border-[1px] px-[16px] text-lg rounded-lg cursor-pointer"><i className="fa-solid fa-arrows-rotate mr-1"></i><a>Đặt lại</a></div>
-        </div>
-          <ModalFilter result={result} setResult={setResult} filterCurrent={filterCurrent} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /></>}
-
+        </Space>
       </div>
-      );
+      {displayModalFilter && <><div className="section-2 flex justify-center shadow">
+        {filters.map(item => <div key={item.id} className="listSelect" onClick={() => handleOpenModalFilter(item)}>
+          <span className="text-slate-500 text-sm font-medium" >{item.name}<i className="fa-solid fa-chevron-down"></i></span>
+          <span>{result[item.id].name}</span>
+        </div>)}
+
+        <div onClick={handleReset} className="my-[10px] text-center flex items-center border-[1px] px-[16px] rounded-lg cursor-pointer"><i className="fa-solid fa-arrows-rotate mr-1"></i><a>Đặt lại</a></div>
+      </div>
+        <ModalFilter result={result} setResult={setResult} filterCurrent={filterCurrent} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /></>}
+
+    </div>
+  );
 };
 
-      export default Header;
+export default Header;

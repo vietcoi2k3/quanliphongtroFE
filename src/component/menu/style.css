@@ -1,4 +1,4 @@
-.manage-postings-container :where(.css-dev-only-do-not-override-n0raxz).ant-select-single .ant-select-selector{
+.manage-postings-container .ant-select-single .ant-select-selector{
     border-radius: 0 !important;
 }
 .manage-postings-container{
@@ -8,19 +8,19 @@
     width: calc(100% - 320px);
 }
 
-.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-form-item .ant-form-item-label,.page-manager-right :where(.css-1ia3nbw).ant-form-item .ant-form-item-label{
+.page-manager-right .ant-form-item .ant-form-item-label{
     text-align: start !important;
 }
 
-.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-row,.page-manager-right :where(.css-1ia3nbw).ant-row{
+.page-manager-right .ant-row{
     display: block;
 }
 
-.post-news-container :where(.css-dev-only-do-not-override-n0raxz).ant-row,.post-news-container .page-manager-right :where(.css-1ia3nbw).ant-row{
+.post-news-container .ant-row{
     display: flex;
 }
 
-.post-news-container :where(.css-dev-only-do-not-override-n0raxz).ant-col-16{
+.post-news-container .ant-col-16{
     max-width: 100% !important;
 }
 
@@ -34,7 +34,7 @@
     height: 30px !important;
     width: 120px !important;
 }
-.page-manager-right :where(.css-dev-only-do-not-override-n0raxz).ant-input-affix-wrapper,
+.page-manager-right .ant-input-affix-wrapper,
 .page-manager-right .ant-btn.css-dev-only-do-not-override-n0raxz.ant-btn-primary.btn-submit {
     padding: 5px 11px;
     height: 35px;

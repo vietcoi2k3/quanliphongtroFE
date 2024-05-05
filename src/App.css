@@ -28,7 +28,7 @@
   color: #61dafb;
 }
 
-.filter-items :where(.css-dev-only-do-not-override-n0raxz).ant-divider-horizontal {
+.filter-items .ant-divider-horizontal {
   margin: 10px 0 !important;
 }
 
