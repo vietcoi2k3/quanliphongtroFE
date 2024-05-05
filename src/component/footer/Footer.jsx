@@ -3,9 +3,9 @@ import "./footer.css";
 
 const Footer = () => {
   return (
-    <div class="grid gap-x-16 grid-cols-4 px-[300px] pb-[50px] bg-[#205597] bottom-0 right-0 top-0">
+    <div class="grid gap-x-16 grid-cols-4 px-[250px] pb-[50px] bg-[#205597] bottom-0 right-0 top-0">
       <div>
-        <h3 class="text-left text-amber-300 py-4 font-bold text-lg">
+        <h3 class="text-left text-amber-300 py-4 font-bold text-[15px]">
           Về chúng tôi
         </h3>
         <ul class="list-none text-left">
@@ -30,7 +30,7 @@ const Footer = () => {
         </ul>
       </div>
       <div class="grid-cols-4">
-        <h3 class="text-left text-amber-300 py-4 font-bold text-lg">
+        <h3 class="text-left text-amber-300 py-4 font-bold text-[15px]">
           Giới thiệu
         </h3>
         <ul class="list-none text-left">
@@ -52,7 +52,7 @@ const Footer = () => {
         </ul>
       </div>
       <div class="grid-cols-4">
-        <h3 class="text-left text-amber-300 py-4 font-bold text-lg">Hỗ trợ</h3>
+        <h3 class="text-left text-amber-300 py-4 font-bold text-[15px]">Hỗ trợ</h3>
         <ul class="list-none text-left">
           <li>Hướng dẫn đăng tin</li>
           <li>Quy định đăng tin</li>
@@ -61,7 +61,7 @@ const Footer = () => {
         </ul>
       </div>
       <div class="grid-cols-4">
-        <h3 class="text-left text-amber-300 py-4 font-bold text-lg">
+        <h3 class="text-left text-amber-300 py-4 font-bold text-[15px]">
           {" "}
           Phương thức thanh toán
         </h3>

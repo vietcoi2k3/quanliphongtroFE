@@ -13,7 +13,7 @@ const MotelArray = ({ id, img, des,title, price, area, address, pagination }) =>
   return (
     <div className="shadow-lg rounded-md overflow-hidden cursor-pointer transition-transform transform hover:-translate-y-1 bg-[#fff]" style={{display:pagination?'flex':'block'}} onClick={navigateDetailMotel}>
       <img
-        src={img}
+        src={img || 'https://img.thuephongtro.com/images/thumb/2021/09/28/20210928102641-ay3g4.jpg'}
         width={pagination?"220px":"100%"}
         heigh={pagination?"220px":"auto"}
         alt=""

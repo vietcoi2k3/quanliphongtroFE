@@ -27,7 +27,11 @@ const AuthApi = {
       };
   
       return axiosClient.put('user/update-user', formData, config);
-    }
+    },
+      changePassword: (data) =>{
+        const url = "user/change-password";
+        return axiosClient.post(url, data)
+      }
   };
   
   export default AuthApi;
