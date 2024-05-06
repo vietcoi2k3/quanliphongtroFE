@@ -33,7 +33,7 @@ const HomeBody = () => {
 
 
   return (
-    <div>
+    <div className='px-[60px]'>
       <div>
         {" "}
         <h1 className="text-3xl text-center mt-8 font-semibold">

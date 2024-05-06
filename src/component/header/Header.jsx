@@ -224,11 +224,11 @@ const Header = () => {
     },
     'khoang-gia': {
       name: 'Tất cả',
-      value: '0-20'
+      value: '0-0'
     },
     'dien-tich': {
       name: 'Tất cả',
-      value: '0-100'
+      value: '0-0'
     },
   })
 
@@ -277,11 +277,11 @@ const Header = () => {
       },
       'khoang-gia': {
         name: 'Tất cả',
-        value: '0-20'
+        value: '0-0'
       },
       'dien-tich': {
         name: 'Tất cả',
-        value: '0-100'
+        value: '0-0'
       },
     })
   }
@@ -299,11 +299,10 @@ const Header = () => {
         <div className="flex">
           <div onClick={() => navigate('/')}><img className="w-[auto] h-[50px] cursor-pointer" src={Logo} /></div>
           <Space>
-
-            <div className="listItem">Cho thuê phòng trọ</div>
-            <div className="listItem">Cho thuê nhà ở</div>
-            <div className="listItem">Cho thuê căn hộ</div>
-            <div className="listItem">Tìm người ở ghép</div>
+            <div className="listItem" onClick={()=>navigate(`listMotel?lnd=1&kv=0&kg=0-0&dt=0-0`)}>Cho thuê phòng trọ</div>
+            <div className="listItem" onClick={()=>navigate(`listMotel?lnd=2&kv=0&kg=0-0&dt=0-0`)}>Cho thuê căn hộ</div>
+            <div className="listItem" onClick={()=>navigate(`listMotel?lnd=3&kv=0&kg=0-0&dt=0-0`)}>Cho thuê nhà ở</div>
+            <div className="listItem" onClick={()=>navigate(`listMotel?lnd=4&kv=0&kg=0-0&dt=0-0`)}>Tìm người ở ghép</div>
           </Space>
         </div>
         <Space>
