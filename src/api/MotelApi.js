@@ -14,6 +14,10 @@ const MotelApi = {
       const url= '/user/add-motel';
       return axiosClient.post(url, data);
     },
+    deleteMotel (id){
+      const url = `/user/delete-motel?id=${id}`
+      return axiosClient.delete(url, id)
+    }
   };
   
   export default MotelApi;

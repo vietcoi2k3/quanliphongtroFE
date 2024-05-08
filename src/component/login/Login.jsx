@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import React, { useState } from 'react';
+import { Button, Checkbox, Form, Input, message, Modal, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Link from 'antd/es/typography/Link';
 import './login.css'
@@ -11,7 +11,23 @@ const onFinishFailed = (errorInfo) => {
 const Login = () => {
     const navigate = useNavigate()
     const [messageApi, contextHolder] = message.useMessage();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { setAuth } = useAuth()
+    const [checkEmail, setCheckEmail] = useState(false)
+    const forgotPassword = async (values) => {
+        const { username } = values
+        try {
+            let messageSuccess = await AuthApi.forgotPasswod(username)
+            if (messageSuccess) {
+                setCheckEmail(true)
+            }
+        } catch (err) {
+            messageApi.open({
+                type: 'warning',
+                content: 'Username không đúng',
+            });
+        }
+    }
     const onFinish = async (values) => {
         try {
             const response = await AuthApi.login({ username: values.username, password: values.password });
@@ -30,10 +46,43 @@ const Login = () => {
             });
         }
     };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
     return (<>
         {contextHolder}
         <div className='w-[100%] login-container flex justify-center items-center py-8 flex-col'>
             <h1 className='text-[35px] font-[700]'>Đăng nhập</h1>
+            <Modal title="Quên mật khẩu" open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)} footer={null}>
+                {checkEmail ? <Result
+                    status="success"
+                    title="Vui lòng kiểm tra email của bạn"
+                /> : <Form
+                    name="basic"
+                    // disabled={loading}
+                    onFinish={forgotPassword}
+                    autoComplete="off"
+
+                >
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập username',
+                            },
+                        ]}
+                    >
+                        <Input className='w-[100%]' />
+                    </Form.Item>
+                    <Form.Item className='text-end'>
+                        <Button type="primary" htmlType="submit">
+                            Xác nhận
+                        </Button>
+                    </Form.Item>
+                </Form>}
+            </Modal>
             <Form
                 name="basic"
                 style={{
@@ -79,7 +128,7 @@ const Login = () => {
                 >
                     <Checkbox>Nhớ tài khoản</Checkbox>
                 </Form.Item>
-                <Link>Quên mật khẩu</Link>
+                <Link onClick={() => setIsModalOpen(true)}>Quên mật khẩu</Link>
 
                 <Form.Item className="my-4">
                     <Button className='btn-submit' type="primary" htmlType="submit">

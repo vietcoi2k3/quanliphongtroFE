@@ -6,6 +6,7 @@ import { useAuth } from '../../AuthContext';
 import './style.css'
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
+import AuthApi from '../../api/AuthApi';
 function getItem(label, key, icon, children, type) {
     return {
         key,
@@ -24,6 +25,8 @@ const items = [
 const MenuUser = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [SelectedKeys, setSelectedKeys] = useState('quan-ly-tin')
+    const [loading, setLoading] = useState(false)
+    const [money, setMoney] = useState(0)
     const currentUrl = window.location.href;
 
     const url = new URL(currentUrl);
@@ -37,7 +40,7 @@ const MenuUser = () => {
         let lastPathSegment = pathParts[pathParts.length - 1];
         let slug = lastPathSegment;
 
-        if(slug){
+        if (slug) {
             setSelectedKeys(slug)
         }
     },
@@ -54,31 +57,28 @@ const MenuUser = () => {
         setAuth('')
         navigate("/")
     }
-    const onFinish = async (values) => {
-        console.log({ values })
+    const onFinish = async () => {
         try {
-
+            let response = await AuthApi.vnPay(money)
+            console.log({ response })
         } catch (err) {
             console.log({ err })
         }
     };
     return (
         <>
-            <Modal title="Thanh toán qua VNPay" open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
+            <Modal title="Thanh toán qua VNPay" open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)} footer={[
+                <Button key="back" onClick={()=>setIsModalOpen(false)}>
+                    Cancel
+                </Button>,
+                <Button key="submit" type="primary" loading={loading} onClick={onFinish}>
+                    Submit
+                </Button>,
+                
+            ]}>
                 <Form
                     name="basic"
-                    // disabled={loading}
-                    initialValues={{
-                        ...auth, imgReturn: [
-                            {
-                                uid: '-1',
-                                name: 'defaultImage.png',
-                                status: 'done',
-                                url: auth.imgReturn,
-                            },
-                        ]
-                    }}
-                    onFinish={onFinish}
+                    disabled={loading}
                     autoComplete="off"
 
                 >
@@ -92,7 +92,7 @@ const MenuUser = () => {
                             },
                         ]}
                     >
-                        <InputNumber className='w-[100%]' placeholder='Tối thiểu 50000' defaultValue={100000} addonAfter="đ" min={0} />
+                        <InputNumber className='w-[100%]' value={money} onChange={setMoney} placeholder='Tối thiểu 50000' defaultValue={100000} addonAfter="đ" min={0} />
                     </Form.Item>
                 </Form>
             </Modal>

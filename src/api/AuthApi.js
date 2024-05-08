@@ -30,7 +30,19 @@ const AuthApi = {
     },
       changePassword: (data) =>{
         const url = "user/change-password";
-        return axiosClient.post(url, data)
+        return axiosClient.put(url, data)
+      },
+      getListUserMotel:({pageSize, pageIndex}) => {
+        const url = `/user/get-list-user-motel?pageIndex=${pageIndex}&pageSize=${pageSize}`
+        return axiosClient.get(url)
+      },
+      forgotPasswod:(username) => {
+        const url = `/auth/forgot-email?username=${username}`
+        return axiosClient.get(url)
+      },
+      vnPay:(money) => {
+        const url =  `/auth/payment/vn-pay?amount=${money}`
+        return axiosClient.get(url)
       }
   };
   
