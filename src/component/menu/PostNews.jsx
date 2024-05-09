@@ -5,10 +5,16 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import ProvinceApi from '../../api/ProvinceApi';
 import MotelApi from '../../api/MotelApi';
 import { useForm } from 'antd/lib/form/Form';
+import { useAuth } from '../../AuthContext';
+
+// Xử lý khi form submit thất bại
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
+
 const { TextArea } = Input;
+
+// Các tùy chọn cho loại bài đăng
 const options = [
   {
     label: 'Tất cả',
@@ -31,6 +37,8 @@ const options = [
     value: 4
   },
 ]
+
+// Các tỉnh/thành phố mẫu
 const province = [
   {
     value: "01",
@@ -45,21 +53,47 @@ const province = [
     label: "Thành phố Đà Nẵng",
   },
 ]
+
 const PostNews = () => {
   const [form] = useForm();
+  const { auth, setAuth } = useAuth()
 
+  // Hàm để chuyển đổi ID tỉnh/thành phố sang mã số tỉnh/thành phố
+  const configIDCity = (oldId) => {
+    if (oldId === "01") {
+      return 1
+    } else if (oldId === "79") {
+      return 2
+    } else {
+      return 3
+    }
+  }
+
+  // State để lưu trữ danh sách các quận/huyện và phường/xã
   const [districts, setDistricts] = useState([])
   const [ward, setWard] = useState([])
+
+  // Hook để điều hướng đến các đường dẫn trong ứng dụng
   const navigate = useNavigate()
+
+  // State để lưu trữ giá trị hiện tại của quận/huyện được chọn
   const [districtValue, setDistrictValue] = useState(null)
+
+  // State để quản lý trạng thái loading và hiển thị thông báo
   const [loading, setLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
+
+  // State để lưu trữ hình ảnh được chọn
   const [img, setImg] = useState()
+
+  // State để lưu trữ địa chỉ
   const [address, setAddress] = useState({
     "province": '',
     "district": '',
     "ward": ''
   })
+
+  // Hàm chuyển đổi file ảnh
   const normFile = (e) => {
     console.log(e)
     setImg(e.file)
@@ -68,6 +102,8 @@ const PostNews = () => {
     }
     return e?.fileList;
   };
+
+  // Hàm xử lý khi submit form
   const onFinish = async (values) => {
     try {
       setLoading(true)
@@ -79,11 +115,9 @@ const PostNews = () => {
       formData.append("acreage", acreage);
       formData.append("address", `${address.province} - ${address.district} - ${address.ward} - ${street}`);
       formData.append("typeMotelID", typeMotelID);
-      formData.append("cityEntityID", province);
+      formData.append("cityEntityID", configIDCity(province));
       formData.append('motelImage', img);
-      formData.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
+      
       let response = await MotelApi.addMotel(formData)
       setLoading(false)
 
@@ -101,21 +135,27 @@ const PostNews = () => {
       });
     }
   };
+
+  // Hàm xử lý thay đổi giá trị của select
   const handleChangeSelect = async (source, id) => {
     try {
       if (source == 'province') {
+        // Cập nhật danh sách xã, phường theo id tỉnh
         let dataDistrict = await ProvinceApi.getDistrictByProvince(id)
         setDistricts(dataDistrict.data.results)
         let provinceOption = province.find(option => option.value === id);
         setAddress(prev => ({ ...prev, "province": provinceOption?.label }))
-        form.setFieldsValue({ ward: undefined, district:undefined });
+        //Khi tỉnh thay đổi thì reset giá trị của xã, phường và đường phố
+        form.setFieldsValue({ ward: undefined, district: undefined });
       }
       if (source == 'district') {
+        // Cập nhật danh đường phố theo id sách xã, phường 
+
         let dataWard = await ProvinceApi.getWardByDistrict(id)
         setWard(dataWard.data.results)
         let districtOption = districts.find(option => option.district_id === id);
-        console.log({ districts })
         setAddress(prev => ({ ...prev, "district": districtOption?.district_name }))
+        //Khi xã, phường thay đổi thì reset giá trị đường phố
         form.setFieldsValue({ ward: undefined });
       }
       if (source == 'ward') {
@@ -126,6 +166,7 @@ const PostNews = () => {
       console.log(err)
     }
   }
+
   return (<>
     <div className='post-news-container px-6 pb-6'>
       {contextHolder}
@@ -143,9 +184,11 @@ const PostNews = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        {/* Phần nhập thông tin khu vực */}
         <h1 className='text-[22px] font-[500] pt-[12px]'>Khu vực</h1>
         <Row gutter={32}>
           <Col span={12}>
+            {/* Chọn tỉnh/thành phố */}
             <Form.Item
               label="Tỉnh/thành phố *"
               name="province"
@@ -155,6 +198,7 @@ const PostNews = () => {
             </Form.Item>
           </Col>
           <Col span={12}>
+            {/* Chọn quận/huyện */}
             <Form.Item
               label="Quận/huyện *"
               name="district"
@@ -164,6 +208,7 @@ const PostNews = () => {
             </Form.Item>
           </Col>
         </Row>
+        {/* Chọn phường/xã và nhập đường/phố */}
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
@@ -184,6 +229,7 @@ const PostNews = () => {
             </Form.Item>
           </Col>
         </Row>
+        {/* Chọn loại bài đăng */}
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
@@ -193,9 +239,9 @@ const PostNews = () => {
             >
               <Select placeholder='Chọn chuyên mục' style={{ width: '100%' }} options={options} />
             </Form.Item>
-
           </Col>
         </Row>
+        {/* Nhập giá và diện tích */}
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
@@ -216,7 +262,9 @@ const PostNews = () => {
             </Form.Item>
           </Col>
         </Row>
+        {/* Phần nhập thông tin mô tả */}
         <h1 className='text-[22px] font-[500] pt-[12px]'>Thông tin mô tả</h1>
+        {/* Nhập tiêu đề */}
         <Form.Item
           label="Tiêu đề"
           name="title"
@@ -227,6 +275,7 @@ const PostNews = () => {
             style={{ width: '100%' }}
           />
         </Form.Item>
+        {/* Nhập mô tả */}
         <Form.Item
           label="Mô tả"
           name="description"
@@ -237,8 +286,8 @@ const PostNews = () => {
             style={{ width: '100%' }}
           />
         </Form.Item>
+        {/* Phần chọn hình ảnh */}
         <h1 className='text-[22px] font-[500] pt-[12px]'>Hình ảnh/video</h1>
-
         <Form.Item label="Ảnh" valuePropName="fileList" name='imgReturn' getValueFromEvent={normFile} rules={[{ required: true, message: 'Vui lòng thêm ảnh !' }]}>
           <Upload beforeUpload={() => false} listType="picture-card" maxCount={1}>
             <button
@@ -260,17 +309,16 @@ const PostNews = () => {
             </button>
           </Upload>
         </Form.Item>
+        {/* Nút submit */}
         <Form.Item className="my-4">
           <Button type="primary" loading={loading} style={{ width: '100%' }} htmlType="submit" className='btn-submit'>
             Đăng tin và thanh toán
           </Button>
         </Form.Item>
       </Form>
-
     </div>
-
   </>
-
   )
 };
+
 export default PostNews;

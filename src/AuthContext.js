@@ -1,19 +1,30 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+// Tạo context cho việc quản lý trạng thái xác thực
 const AuthContext = createContext(null);
 
+// Hook để sử dụng context trạng thái xác thực
 export const useAuth = () => useContext(AuthContext);
 
+// Provider để cung cấp trạng thái xác thực cho toàn bộ ứng dụng
 export const AuthProvider = ({ children }) => {
+    // Sử dụng useState để lưu trữ trạng thái xác thực
     const [auth, setAuth] = useState(false);
 
+    // Sử dụng useEffect để kiểm tra trạng thái xác thực khi ứng dụng được tải lần đầu
     useEffect(() => {
+        // Kiểm tra xem có access token được lưu trong localStorage không
         const accessToken = localStorage.getItem('access_token');
+        // Lấy thông tin người dùng từ localStorage
         const user = JSON.parse(localStorage.getItem('user'));;
+        
+        // Nếu có access token, đánh dấu người dùng đã xác thực
         if (accessToken) {
             // setAuth(true);
             console.log('Setting auth to true...');
         }
+        
+        // Nếu có thông tin người dùng, cập nhật trạng thái xác thực với thông tin người dùng
         if(user){
             setAuth(user)
         }
@@ -21,10 +32,10 @@ export const AuthProvider = ({ children }) => {
 
     console.log('Rendering AuthProvider with auth:', auth);
 
+    // Trả về Provider với giá trị context là trạng thái xác thực và setter của nó
     return (
         <AuthContext.Provider value={{ auth, setAuth }}>
             {children}
         </AuthContext.Provider>
     );
 };
-

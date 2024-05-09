@@ -17,8 +17,11 @@ import PrivateRoute from "./component/PrivateRoute";
 import { AuthProvider } from "./AuthContext";
 import DetailMotel from "./component/detailMotel/DetailMotel";
 import Hompage from "./component/home/Hompage";
+import RechargeSuccess from "./component/menu/RechargeSuccess";
+import NotFound from "./component/NotFound";
 function App() {
   return (
+    // Sử dụng ConfigProvider của Ant Design để cấu hình theme
     <ConfigProvider
       theme={{
         token: {
@@ -26,9 +29,12 @@ function App() {
         }
       }}
     >
+      {/* Sử dụng AuthProvider để quản lý xác thực */}
       <AuthProvider>
         <BrowserRouter>
+        {/* Sử dụng Routes để định nghĩa các route */}
           <Routes>
+             {/* Route chính */}
             <Route path="/" element={<Hompage />} >
               <Route index element={<HomeBody />} />
               <Route path="/login" element={<Login />} />
@@ -36,12 +42,16 @@ function App() {
               <Route path="/listMotel" element={<ListMotel />} />
               <Route path="/motel/:idMotel" element={<DetailMotel />} />
             </Route>
-              <Route path="/user" element={<PrivateRoute component={MenuUser} />}>
-                <Route path="quan-ly-tin" element={<ManagePostings />} />
-                <Route path="dang-tin-moi" element={<PostNews />} />
-                <Route path="thong-tin-ca-nhan" element={<PersonalInformation />} />
-                <Route path="doi-mat-khau" element={<ChangePassword />} />
-              </Route>
+            {/* Route cho người dùng đã đăng nhập*/}
+            <Route path="/user" element={<PrivateRoute component={MenuUser} />}>
+              <Route path="quan-ly-tin" element={<ManagePostings />} />
+              <Route path="dang-tin-moi" element={<PostNews />} />
+              <Route path="thong-tin-ca-nhan" element={<PersonalInformation />} />
+              <Route path="doi-mat-khau" element={<ChangePassword />} />
+              <Route path="nap-tai-khoan-thanh-cong" element={<RechargeSuccess />} />
+            </Route>
+            {/* Route mặc định nếu không tìm thấy */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import "./motelArray.css";
 
 
-
-
+// Component MotelArray để hiển thị thẻ card chứa thông tin cơ bản của một căn nhà trọ
 const MotelArray = ({ id, img, des,title, price, area, address, pagination }) => {
   const navigate = useNavigate()
+  // Hàm điều hướng đến trang chi tiết của căn nhà trọ
   const navigateDetailMotel = () => {
     navigate(`/motel/${id}`)
   }
   return (
+    // Div chứa thông tin căn nhà trọ, có thể click để điều hướng đến trang chi tiết
     <div className="shadow-lg rounded-md overflow-hidden cursor-pointer transition-transform transform hover:-translate-y-1 bg-[#fff]" style={{display:pagination?'flex':'block'}} onClick={navigateDetailMotel}>
       <img
         src={img || 'https://img.thuephongtro.com/images/thumb/2021/09/28/20210928102641-ay3g4.jpg'}

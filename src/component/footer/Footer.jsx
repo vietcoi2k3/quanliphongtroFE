@@ -3,6 +3,7 @@ import "./footer.css";
 
 const Footer = () => {
   return (
+    // Phần footer chia thành 4 cột với thông tin cơ bản
     <div class="grid gap-x-16 grid-cols-4 px-[250px] pb-[50px] bg-[#205597] bottom-0 right-0 top-0">
       <div>
         <h3 class="text-left text-amber-300 py-4 font-bold text-[15px]">

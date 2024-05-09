@@ -3,14 +3,16 @@ import { Input, Space, Select, Table, Popconfirm } from 'antd';
 import AuthApi from '../../api/AuthApi';
 import { DeleteOutlined } from '@ant-design/icons'
 import MotelApi from '../../api/MotelApi';
+
 const { Search } = Input;
 const { Option } = Select;
+
+// Các tùy chọn mặc định cho việc lọc tin đăng
 const optionsDefault = [
     {
         name: 'Tất cả',
         count: 0,
         checked: true,
-
     },
     {
         name: 'Đã cho thuê',
@@ -25,6 +27,7 @@ const optionsDefault = [
 ]
 
 const ManagePostings = () => {
+    // Hàm xử lý tìm kiếm bài đăng
     const onSearch = (value, _e) => {
         if(value == ""){
             setDataSourceFilter(dataSource)
@@ -33,9 +36,13 @@ const ManagePostings = () => {
             setDataSourceFilter(searchedData)
         }
     }
+
+    // Các biến state và hàm state
     const [options, setOptions] = useState(optionsDefault)
     const [dataSource, setDataSource] = useState([])
     const [dataSourceFilter, setDataSourceFilter] = useState([])
+
+    // Dữ liệu về loại nhà đất
     const loaiNhaDat = [
         {
             name: 'Tất cả',
@@ -58,6 +65,8 @@ const ManagePostings = () => {
             value: 4
         },
     ]
+
+    // Xử lý xóa bài đăng
     const handleDelete = async (key) => {
         try {
             await MotelApi.deleteMotel(key)
@@ -67,6 +76,8 @@ const ManagePostings = () => {
             console.log(err)
         }
     };
+
+    // Lấy dữ liệu từ API khi trang được tải
     const fechData = async () => {
         try {
             let data = await AuthApi.getListUserMotel({ pageIndex: 0, pageSize: 10 })
@@ -75,10 +86,12 @@ const ManagePostings = () => {
             console.log(err)
         }
     }
+    
     useEffect(() => {
         fechData()
     }, [])
 
+    // Xử lý thay đổi loại tin đăng
     const handleChangeNewsType = (id) => {
         if(id==0){
             setDataSourceFilter(dataSource)
@@ -88,19 +101,18 @@ const ManagePostings = () => {
         }
     };
 
+    // Cập nhật lại bộ lọc khi dữ liệu thay đổi
     useEffect(()=>{
         setDataSourceFilter(dataSource)
     },[dataSource])
 
-
+    // Xử lý sự kiện khi người dùng chọn tùy chọn
     const clickBtnOption = (name) => {
         setOptions(prev => prev.map(item => item.name === name ? { ...item, checked: true } : { ...item, checked: false }))
     }
-    const ButtonOption = ({ name, count, checked }) => {
-        return (<div className='rounded-lg p-2 cursor-pointer text-[14px]' onClick={() => clickBtnOption(name)} style={{ backgroundColor: checked ? '#00008b' : '#ffc0cb', color: checked ? '#fff' : '#000' }}>
-            <p>{name} ({count})</p>
-        </div>)
-    }
+
+
+    // Các cột trong bảng
     const columns = [
         {
             title: 'Tin đăng',
@@ -136,7 +148,6 @@ const ManagePostings = () => {
             dataIndex: 'typeMotelID',
             key: 'typeMotelID',
             render: (typeMotelID) => {
-                console.log(typeMotelID)
                 let nameMotel = loaiNhaDat.find(item => item.value == typeMotelID)
                 return <p>{nameMotel?.name}</p>
             },
@@ -155,15 +166,15 @@ const ManagePostings = () => {
                 ) : null,
         },
     ];
+
     return (
         <div className='manage-postings-container'>
+            {/* Ô tìm kiếm và dropdown lọc */}
             <Space wrap>
                 <Search
                     placeholder="input search text"
                     onSearch={onSearch}
-                    style={{
-                        width: 200,
-                    }}
+                    style={{ width: 200 }}
                 />
                 <Select
                     placeholder='Lọc theo loại tin'
@@ -175,14 +186,9 @@ const ManagePostings = () => {
                     ))}
                 </Select>
             </Space>
-            {/* <Space className='w-[100%] py-4'>
 
-                {options.map(option => <ButtonOption key={option.name} name={option.name} count={option.count} checked={option.checked} />)}
-            </Space> */}
-            <Table columns={columns} className='pt-4' dataSource={dataSourceFilter} scroll={{
-                x: 1300,
-            }} />
-
+            {/* Bảng hiển thị dữ liệu */}
+            <Table columns={columns} className='pt-4' dataSource={dataSourceFilter} scroll={{ x: 1300 }} />
         </div>
     )
 }

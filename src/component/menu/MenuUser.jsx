@@ -7,6 +7,8 @@ import './style.css'
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
 import AuthApi from '../../api/AuthApi';
+
+// Hàm tạo mục menu
 function getItem(label, key, icon, children, type) {
     return {
         key,
@@ -16,12 +18,15 @@ function getItem(label, key, icon, children, type) {
         type,
     };
 }
+
+// Các mục menu
 const items = [
     getItem('Quản lý tin đăng', 'quan-ly-tin', <BarsOutlined />),
     getItem('Đăng tin mới', 'dang-tin-moi', <FormOutlined />),
     getItem('Thông tin cá nhân', 'thong-tin-ca-nhan', <UserOutlined />),
     getItem('Đổi mật khẩu', 'doi-mat-khau', <LockOutlined />),
 ];
+
 const MenuUser = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [SelectedKeys, setSelectedKeys] = useState('quan-ly-tin')
@@ -35,6 +40,8 @@ const MenuUser = () => {
     const handleOk = () => {
         setIsModalOpen(false);
     };
+
+    // Lấy đoạn path cuối cùng trong URL
     useEffect(() => {
         let pathParts = pathname.split('/');
         let lastPathSegment = pathParts[pathParts.length - 1];
@@ -43,44 +50,54 @@ const MenuUser = () => {
         if (slug) {
             setSelectedKeys(slug)
         }
-    },
-        [pathname])
+    }, [pathname])
+
     const navigate = useNavigate()
     const { auth, setAuth } = useAuth()
+
+    // Xử lý sự kiện khi chọn mục trong menu
     const onClick = (e) => {
         if (e.key) {
             navigate(e.key)
         }
     };
+
+    // Xử lý đăng xuất
     const handleLogout = () => {
         localStorage.clear();
         setAuth('')
         navigate("/")
     }
+
+    // Xử lý gửi yêu cầu nạp tiền
     const onFinish = async () => {
         try {
+            const { accountName, phoneNumber, email, img, imgReturn } = auth
             let response = await AuthApi.vnPay(money)
-            console.log({ response })
+            navigate('nap-tai-khoan-thanh-cong')
+            setIsModalOpen(false)
         } catch (err) {
+            setIsModalOpen(false)
             console.log({ err })
         }
     };
+
     return (
         <>
+            {/* Modal nạp tiền */}
             <Modal title="Thanh toán qua VNPay" open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)} footer={[
-                <Button key="back" onClick={()=>setIsModalOpen(false)}>
-                    Cancel
+                <Button key="back" onClick={() => setIsModalOpen(false)}>
+                    Hủy
                 </Button>,
                 <Button key="submit" type="primary" loading={loading} onClick={onFinish}>
-                    Submit
+                    Gửi
                 </Button>,
-                
+
             ]}>
                 <Form
                     name="basic"
                     disabled={loading}
                     autoComplete="off"
-
                 >
                     <Form.Item
                         label="Số tiền"
@@ -96,18 +113,20 @@ const MenuUser = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+
             <Header />
+
             <section className='flex'>
+                {/* Menu người dùng */}
                 <div className='w-[320px] p-5'>
                     <div className='flex flex-row'>
                         <Avatar size={60} src={auth.imgReturn} />
-                        <h1 className='text-[26px] font-[600] ml-3'>{auth.
-                            accountName || 'Người dùng'}</h1>
+                        <h1 className='text-[26px] font-[600] ml-3'>{auth.accountName || 'Người dùng'}</h1>
                     </div>
                     <div className='pb-2 px-2 p-4 bg-[#d9d9d9] my-4'>
                         <div className='flex justify-between w-[100%] rounded-md'>
                             <p>Số dư tài khoản</p>
-                            <p className='text-right'>0 đ</p>
+                            <p className='text-right'>{auth?.money}</p>
                         </div>
                         <div className='bg-[#fff] my-3 rounded-lg p-3'>
                             <p>Mã tài khoản</p>
@@ -118,6 +137,7 @@ const MenuUser = () => {
                         </div>
                         <Button type="primary" style={{ width: '100%' }} onClick={() => setIsModalOpen(true)}>Nạp tiền</Button>
                     </div>
+                    {/* Menu dọc */}
                     <Menu
                         onClick={onClick}
                         style={{
@@ -129,31 +149,20 @@ const MenuUser = () => {
                         items={items}
                     />
                     <Divider />
+                    {/* Nút đăng xuất */}
                     <Button className='w-[100%] text-start border-none' icon={<LogoutOutlined />} onClick={handleLogout}>
                         Đăng xuất
                     </Button>
                 </div>
                 <div className='bg-[#F1F1F1] page-manager-right'>
-                    {/* <Breadcrumb
-                    separator=">"
-                    items={[
-                        {
-                            title: 'Trang quản lý',
-                        },
-                        {
-                            title: 'Application Center',
-                            href: '',
-                        },
-                    ]}
-                /> */}
-                    <div className='max-w-[950px] mx-auto my-5 bg-[#fff]'>
+                   
+                    <div className='max-w-[950px] mx-auto my-5 bg-[#fff] min-h-[100vh]'>
                         <Outlet />
                     </div>
                 </div>
             </section>
             <Footer />
         </>
-
     )
 }
 

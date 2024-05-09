@@ -1,11 +1,11 @@
 import axios from "axios";
 import { STATIC_HOST_LOCAL } from "../enviroment";
 
-
+// Tạo một instance của axios với baseURL
 const axiosClient = axios.create({
   baseURL: `${STATIC_HOST_LOCAL}`,
 })
-// Add a request interceptor
+// Thêm một interceptor cho request
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token")
@@ -21,17 +21,13 @@ axiosClient.interceptors.request.use(
   },
 )
 
-// Add a response interceptor
+// Thêm một interceptor cho response
 axiosClient.interceptors.response.use(
   function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    console.log({response})
     return response?.data
   },
   function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+    // Xử lý lỗi từ response
     return Promise.reject(error)
   },
 )

@@ -10,6 +10,7 @@ const DetailMotel = () => {
   const [dataMotel, setDataMotel] = useState()
   const [loading, setLoading] = React.useState(false);
   const [dataMotelSameArea, setDataMotelSameArea] = useState([])
+  // Hàm fetchData để lấy dữ liệu danh sách trọ từ API
   const fetchData = async () => {
     try {
       window.scrollTo({
@@ -18,7 +19,9 @@ const DetailMotel = () => {
       });
       setLoading(true)
       if (idMotel) {
+        // Lấy thông tin chi tiết của nhà trọ dựa trên id
         let data = await MotelApi.getMotelById(idMotel)
+        // Tạo query để lấy danh sách nhà trọ theo khu vực
         let query = {
           "typeMotelId": 0,
           "cityEntityId": data.cityEntityID,
@@ -29,9 +32,11 @@ const DetailMotel = () => {
           "pageSize": 8,
           "pageIndex": 1
         }
+        // Lấy danh sách nhà trọ cùng khu vực
         const dataSameArea = await MotelApi.paingMotel(query)
+        // Lưu danh sách nhà trọ cùng khu vực vào state
         setDataMotelSameArea(dataSameArea.motelDTOList)
-        console.log(data)
+         // Lưu thông tin chi tiết của nhà trọ vào state
         setDataMotel(data)
       }
       setLoading(false)
@@ -41,13 +46,15 @@ const DetailMotel = () => {
       console.log(err)
     }
   }
+
+  // Gọi hàm fetchData khi idMotel thay đổi
   useEffect(() => {
     fetchData()
   }, [idMotel])
   return (
     <div className='detail-motel-container'>
-      <Spin spinning={loading}>
-
+      <Spin spinning={loading}> {/* Hiển thị spin khi đang loading */}
+       {/* Phần chi tiết của Motel */}
         <Row gutter={16}>
           <Col span={16}>
             <Card bordered={false}>
@@ -62,7 +69,7 @@ const DetailMotel = () => {
                 <Divider />
                 <div className='w-[100%] text-center mb-3'>
                   <img width={500}
-                    src={dataMotel?.imageReturn} />
+                    src={dataMotel?.motelImage} />
                 </div>
                 <h2 className='title-section'>Thông tin mô tả</h2>
                 <p>{dataMotel?.description}</p>
@@ -70,15 +77,15 @@ const DetailMotel = () => {
                 <h2 className='title-section'>Đặc điểm tin đăng</h2>
                 <Row gutter={16}>
                   <Col span={6} className='flex justify-between'>
-                    <Statistic title="Ngày cập nhật" value={'01/05/2024'} />
+                    <Statistic title="Ngày cập nhật" value={dataMotel?.dateRelease || '01/05/2024'} />
                     <Divider type='vertical' className='h-[100%]' />
                   </Col>
                   <Col span={6} className='flex justify-between'>
-                    <Statistic title="Ngày hết hạn" value={'08/05/2024'} />
+                    <Statistic title="Ngày hết hạn" value={dataMotel?.dateExpried ||'08/05/2024'} />
                     <Divider type='vertical' className='h-[100%]' />
                   </Col>
                   <Col span={6} className='flex justify-between'>
-                    <Statistic title="08/05/2024" value={'VIP 3'} />
+                    <Statistic title="Loại tin" value={'Tin thường'} />
                     <Divider type='vertical' className='h-[100%]' />
                   </Col>
                   <Col span={6} className='flex justify-between'>
@@ -90,12 +97,13 @@ const DetailMotel = () => {
               </content>
             </Card>
           </Col>
+          {/* Thông tin người đăng và liên hệ */}
           <Col span={8}>
             <Card>
               <div className='flex flex-row items-center'>
                 <Avatar size={60} className='mr-3' icon={<UserOutlined />} />
                 <div>
-                  <h1 className='text-[26px] font-[600] mb-1'>Ngọc Huyền</h1>
+                  <h1 className='text-[26px] font-[600] mb-1'>{dataMotel?.accountName || ' Nguyễn Văn A'}</h1>
                   <p className='text-[#919191]'>Ngày tham gia: 04/01/2014</p>
                 </div>
               </div>
@@ -104,12 +112,14 @@ const DetailMotel = () => {
                 Nhắn zalo
               </Button>
               <Button className='w-[100%] ' type="primary" icon={<PhoneOutlined />}>
-                0562314568
+              {dataMotel?.phoneNumber || ' 0562314568'}
+               
               </Button>
             </Card>
           </Col>
 
         </Row>
+        {/* Danh sách một vài nhà trọ cùng khu vực */}
         <h2 className='title-section mt-10 mb-3'>Tin đăng cùng khu vực</h2>
         <div className=" grid grid-cols-4 gap-4 mt-4">
           {dataMotelSameArea?.map((motel, index) => (

@@ -6,9 +6,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../../AuthContext'
 import Logo from '../../assets/logo.jpg'
 import { Space } from "antd";
+// Danh sách các bộ lọc
 const filters = [
   {
-    name: 'Loại nhà đất',
+    name: 'Loại nhà đất', // Các lựa chọn cho loại nhà đất
     id: 'loai-nha-dat',
     options: [
       {
@@ -34,7 +35,7 @@ const filters = [
     ]
   },
   {
-    name: 'Khu vực',
+    name: 'Khu vực',// Các lựa chọn cho khu vực
     id: 'khu-vuc',
     options: [
       {
@@ -56,7 +57,7 @@ const filters = [
     ]
   },
   {
-    name: 'Khoảng giá',
+    name: 'Khoảng giá',// Các lựa chọn cho khoảng giá
     id: 'khoang-gia',
     min: 0,
     max: 20,
@@ -133,7 +134,7 @@ const filters = [
   },
 
   {
-    name: 'Diện tích',
+    name: 'Diện tích', // Các lựa chọn cho diện tích
     id: 'dien-tich',
     min: 0,
     max: 100,
@@ -206,13 +207,14 @@ const Header = () => {
   const [filterCurrent, setFilterCurrent] = useState('')
   const [displayModalFilter, setDisplayModalFilter] = useState('')
 
-
+  //Lấy thông tin loai nha dat, khu vuc, khoang gia, dien tich thông qua url 
   const queryParams = new URLSearchParams(location.search);
   const lnd = queryParams.get('lnd');
   const kv = queryParams.get('kv');
   const kg = queryParams.get('kg');
   const dt = queryParams.get('dt');
 
+  //Định nghĩa state để cập nhật kết quả bộ lọc
   const [result, setResult] = useState({
     'loai-nha-dat': {
       name: 'Tất cả',
@@ -235,7 +237,8 @@ const Header = () => {
   useEffect(() => {
     const selectedFilters = {};
     if (lnd && kv && kg && dt) {
-
+      // Xác định bộ lọc nào đang được chọn từ url
+      // và cập nhật giá trị tương ứng
       filters.forEach(filter => {
         switch (filter.id) {
           case 'loai-nha-dat':
@@ -256,6 +259,7 @@ const Header = () => {
       });
       setResult(selectedFilters)
     }
+    // Khi ở trnag quản lý người dùng thì ẩn bộ lọc, ngược lại ở trang home thì hiển thị bộ lọc
     if (location.pathname.includes('/user/')) {
       setDisplayModalFilter(false)
     } else {
@@ -263,7 +267,7 @@ const Header = () => {
     }
   }, [location]);
 
-
+  // Đặt lại giá trị của các bộ lọc và đường dẫn URL
   const handleReset = () => {
     navigate(`listMotel?lnd=0&kv=0&kg=0-0&dt=0-0`);
     setResult({
@@ -287,22 +291,25 @@ const Header = () => {
   }
 
   const handleOpenModalFilter = (item) => {
+    //Lưu thông tin bộ lọc hiện tại được chọn để render ra modal
     setFilterCurrent(item)
+    // Mở modal để chọn bộ lọc
     setIsModalOpen(true);
   }
 
   return (
     <div className="header">
+      {/* Phần đầu trang */}
       <div
         className="section-1 flex justify-between py-2.5 px-8 border-b-[1px]"
       >
         <div className="flex">
           <div onClick={() => navigate('/')}><img className="w-[auto] h-[50px] cursor-pointer" src={Logo} /></div>
           <Space>
-            <div className="listItem" onClick={()=>navigate(`/listMotel?lnd=1&kv=0&kg=0-0&dt=0-0`)}>Cho thuê phòng trọ</div>
-            <div className="listItem" onClick={()=>navigate(`/listMotel?lnd=2&kv=0&kg=0-0&dt=0-0`)}>Cho thuê căn hộ</div>
-            <div className="listItem" onClick={()=>navigate(`/listMotel?lnd=3&kv=0&kg=0-0&dt=0-0`)}>Cho thuê nhà ở</div>
-            <div className="listItem" onClick={()=>navigate(`/listMotel?lnd=4&kv=0&kg=0-0&dt=0-0`)}>Tìm người ở ghép</div>
+            <div className="listItem" onClick={() => navigate(`/listMotel?lnd=1&kv=0&kg=0-0&dt=0-0`)}>Cho thuê phòng trọ</div>
+            <div className="listItem" onClick={() => navigate(`/listMotel?lnd=2&kv=0&kg=0-0&dt=0-0`)}>Cho thuê căn hộ</div>
+            <div className="listItem" onClick={() => navigate(`/listMotel?lnd=3&kv=0&kg=0-0&dt=0-0`)}>Cho thuê nhà ở</div>
+            <div className="listItem" onClick={() => navigate(`/listMotel?lnd=4&kv=0&kg=0-0&dt=0-0`)}>Tìm người ở ghép</div>
           </Space>
         </div>
         <Space>
@@ -337,12 +344,14 @@ const Header = () => {
           </div>
         </Space>
       </div>
+      {/* Modal chọn bộ lọc */}
       {displayModalFilter && <><div className="section-2 flex justify-center shadow">
+        {/* Danh sách các bộ lọc */}
         {filters.map(item => <div key={item.id} className="listSelect" onClick={() => handleOpenModalFilter(item)}>
           <span className="text-slate-500 text-sm font-medium" >{item.name}<i className="fa-solid fa-chevron-down"></i></span>
           <span>{result[item.id].name}</span>
         </div>)}
-
+        {/* Nút đặt lại bộ lọc */}
         <div onClick={handleReset} className="my-[10px] text-center flex items-center border-[1px] px-[16px] rounded-lg cursor-pointer"><i className="fa-solid fa-arrows-rotate mr-1"></i><a>Đặt lại</a></div>
       </div>
         <ModalFilter result={result} setResult={setResult} filterCurrent={filterCurrent} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /></>}
