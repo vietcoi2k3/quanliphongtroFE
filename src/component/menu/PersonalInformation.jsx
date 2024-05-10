@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, Upload, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,7 +15,7 @@ const onFinishFailed = (errorInfo) => {
 // Component Thông tin cá nhân
 const PersonalInformation = () => {
 
-  const [loading, setLoading] = useState(false) 
+  const [loading, setLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage(); // Hook message để hiển thị thông báo
 
   const { auth, setAuth } = useAuth() // Hook useAuth để lấy thông tin người dùng và cập nhật thông tin người dùng
@@ -33,7 +33,7 @@ const PersonalInformation = () => {
 
   // Hàm xử lý khi submit form
   const onFinish = async (values) => {
-    setLoading(true) 
+    setLoading(true)
     const formData = new FormData();
     formData.append("accountName", values.accountName);
     formData.append("email", values.email);
@@ -45,14 +45,14 @@ const PersonalInformation = () => {
         setAuth({ ...auth, ...response }) // Cập nhật thông tin người dùng trong trạng thái local
         localStorage.setItem('user', JSON.stringify({ ...auth, ...response })); // Lưu thông tin người dùng vào local storage
       }
-      setLoading(false) 
+      setLoading(false)
       messageApi.open({
         type: 'success',
         content: 'Cập nhật thành công',
       }); // Hiển thị thông báo thành công
 
     } catch (err) {
-      setLoading(false) 
+      setLoading(false)
       messageApi.open({
         type: 'error',
         content: 'Cập nhật thất bại',
@@ -61,7 +61,11 @@ const PersonalInformation = () => {
       console.log({ err }) // Log lỗi ra console
     }
   };
-
+  useEffect(() => {
+    if (auth.imgReturn) {
+      setImg(auth.imgReturn)
+    }
+  }, [])
   return (<>
     {contextHolder} {/* Hook contextHolder để hiển thị thông báo */}
     {/* Form thông tin cá nhân */}

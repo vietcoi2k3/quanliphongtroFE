@@ -30,6 +30,7 @@ const Register = () => {
             setAuth(response)
             // Lưu access token vào local storage
             localStorage.setItem('access_token', response.jwttoken);
+            localStorage.setItem('user', JSON.stringify(response));
             // Chuyển hướng về trang chính
             navigate('/');
         } catch (error) {
@@ -43,9 +44,9 @@ const Register = () => {
 
     return (
         <>
+            {contextHolder}
             <div className='w-[100%] login-container flex justify-center items-center py-8 flex-col'>
                 {/* Component để hiển thị thông báo */}
-                {contextHolder}
                 <h1 className='text-[35px] font-[700]'>Đăng ký tài khoản</h1>
                 {/* Form đăng ký */}
                 <Form

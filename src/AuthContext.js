@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
         // Nếu có access token, đánh dấu người dùng đã xác thực
         if (accessToken) {
             // setAuth(true);
-            console.log('Setting auth to true...');
         }
         
         // Nếu có thông tin người dùng, cập nhật trạng thái xác thực với thông tin người dùng
@@ -30,7 +29,6 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    console.log('Rendering AuthProvider with auth:', auth);
 
     // Trả về Provider với giá trị context là trạng thái xác thực và setter của nó
     return (

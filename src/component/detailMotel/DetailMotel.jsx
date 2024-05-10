@@ -32,6 +32,7 @@ const DetailMotel = () => {
           "pageSize": 8,
           "pageIndex": 1
         }
+        console.log({data})
         // Lấy danh sách nhà trọ cùng khu vực
         const dataSameArea = await MotelApi.paingMotel(query)
         // Lưu danh sách nhà trọ cùng khu vực vào state
