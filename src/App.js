@@ -19,6 +19,10 @@ import DetailMotel from "./component/detailMotel/DetailMotel";
 import Hompage from "./component/home/Hompage";
 import RechargeSuccess from "./component/menu/RechargeSuccess";
 import NotFound from "./component/NotFound";
+import Quydinh from "./component/footer/Quydinh";
+import Gioithieu from "./component/footer/Gioithieu";
+import Quyche from "./component/footer/Quyche";
+import Chinhsach from "./component/footer/Chinhsach";
 function App() {
   return (
     // Sử dụng ConfigProvider của Ant Design để cấu hình theme
@@ -41,6 +45,10 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/listMotel" element={<ListMotel />} />
               <Route path="/motel/:idMotel" element={<DetailMotel />} />
+              <Route path="/gioi-thieu" element={<Gioithieu />} />
+              <Route path="/quy-che-hoat-dong" element={<Quyche />} />
+              <Route path="/chinh-sach-bao-mat" element={<Chinhsach />} />
+              <Route path="/quy-dinh-su-dung" element={<Quydinh />} />
             </Route>
             {/* Route cho người dùng đã đăng nhập*/}
             <Route path="/user" element={<PrivateRoute component={MenuUser} />}>

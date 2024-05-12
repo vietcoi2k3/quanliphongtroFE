@@ -113,7 +113,16 @@ const PostNews = ({ id, setDataSource }) => {
       let wards = await ProvinceApi.getWardByDistrict(district.district_id)
       let ward = wards.data.results.find(item => item.ward_name === addressArray[2])
       setWard(wards.data.results)
-      form.setFieldsValue({ province: idProvince, district: district.district_id, ward: ward.ward_id, street: addressArray[3], typeMotelID: data.typeMotel });
+      form.setFieldsValue({
+        province: idProvince, district: district.district_id, ward: ward.ward_id, street: addressArray[3], typeMotelID: data.typeMotel, imgReturn: [
+          {
+            uid: '-1',
+            name: 'defaultImage.png',
+            status: 'done',
+            url: data.motelImage,
+          },
+        ]
+      });
       urlToBlob(data.motelImage)
         .then(blob => {
           // Tạo một đối tượng File từ Blob
@@ -191,6 +200,7 @@ const PostNews = ({ id, setDataSource }) => {
             type: 'success',
             content: 'Thêm thành công',
           });
+          navigate('/user/quan-ly-tin')
         }
       }
       setLoading(false)

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Space, Select, Table, Popconfirm, Modal } from 'antd';
+import { Input, Space, Select, Table, Popconfirm, Modal, Image } from 'antd';
 import AuthApi from '../../api/AuthApi';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import MotelApi from '../../api/MotelApi';
@@ -99,6 +99,9 @@ const ManagePostings = () => {
     useEffect(() => {
         fechData()
     }, [])
+    useEffect(() => {
+        setDataSourceFilter(dataSource)
+    }, [dataSource])
 
     // Xử lý thay đổi loại tin đăng
     const handleChangeNewsType = (id) => {
@@ -111,13 +114,13 @@ const ManagePostings = () => {
         if (searchValue !== "") {
             // Lọc ra dữ liệu khi tìm kiếm
             newDataFiltered = newDataFiltered.filter(item => (item.title.toLowerCase().includes(searchValue.toLowerCase().trim()) || (item.description.toLowerCase().includes(searchValue.toLowerCase().trim()))))
-        } 
+        }
         if (newsType !== 0) {
             // Lọc ra dữ liệu khi lọc theo loại tin
-            console.log({newsType})
+            console.log({ newsType })
             newDataFiltered = newDataFiltered.filter(item => item.typeMotelID === newsType)
         }
-        console.log({newsType})
+        console.log({ newsType })
         setDataSourceFilter(newDataFiltered)
         console.log({ newDataFiltered })
     }, [searchValue, newsType])
@@ -153,6 +156,18 @@ const ManagePostings = () => {
             title: 'Địa chỉ',
             dataIndex: 'address',
             key: 'address',
+        },
+        {
+            title: 'Ảnh phòng trọ',
+            dataIndex: 'imageReturn',
+            key: 'imageReturn',
+            width:150,
+            render: (imageReturn) => {
+                return <Image
+                    width={100}
+                    src={imageReturn}
+                />
+            },
         },
         {
             title: 'Loại tin đăng',

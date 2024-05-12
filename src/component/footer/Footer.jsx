@@ -36,16 +36,16 @@ const Footer = () => {
         </h3>
         <ul class="list-none text-left">
           <li>
-            <a href="">Giới thiệu</a>
+            <a href="/gioi-thieu">Giới thiệu</a>
           </li>
           <li>
-            <a href="">Quy chế hoạt động</a>
+            <a href="/quy-che-hoat-dong">Quy chế hoạt động</a>
           </li>
           <li>
-            <a href="">Chính sách bảo mật</a>
+            <a href="/chinh-sach-bao-mat">Chính sách bảo mật</a>
           </li>
           <li>
-            <a href="">Quy định sử dụng</a>
+            <a href="/quy-dinh-su-dung">Quy định sử dụng</a>
           </li>
           <li>
             <a href="">Liên hệ</a>
