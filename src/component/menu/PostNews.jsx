@@ -56,7 +56,7 @@ const province = [
 
 const PostNews = ({ id }) => {
   const [form] = useForm();
-  const {auth} = useAuth()
+  const { auth } = useAuth()
   // Hàm để chuyển đổi ID tỉnh/thành phố sang mã số tỉnh/thành phố
   const configIDCity = (oldId) => {
     if (oldId === "01") {
@@ -176,12 +176,19 @@ const PostNews = ({ id }) => {
           type: 'success',
           content: 'Sửa thành công',
         });
-      }else{
-        let response = await MotelApi.addMotel(formData)
-        messageApi.open({
-          type: 'success',
-          content: 'Thêm thành công',
-        });
+      } else {
+        if (auth.money < 150000) {
+          messageApi.open({
+            type: 'warning',
+            content: 'Số tiền bạn nạp không đủ, vui lòng nạp thêm tiền để đăng được tin',
+          });
+        } else {
+          let response = await MotelApi.addMotel(formData)
+          messageApi.open({
+            type: 'success',
+            content: 'Thêm thành công',
+          });
+        }
       }
       setLoading(false)
 

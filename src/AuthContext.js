@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
     // Sử dụng useState để lưu trữ trạng thái xác thực
     const [auth, setAuth] = useState(false);
 
-    // Sử dụng useEffect để kiểm tra trạng thái xác thực khi ứng dụng được tải lần đầu
 
     useEffect(() => {
         // Kiểm tra xem có access token được lưu trong localStorage không

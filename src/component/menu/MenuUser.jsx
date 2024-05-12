@@ -75,7 +75,7 @@ const MenuUser = () => {
             let response = await AuthApi.vnPay(money)
             console.log(response)
             if(response.code === "ok"){
-                navigate(`/${response.paymentUrl}`)
+                window.location.href = response.paymentUrl
             }
             setIsModalOpen(false)
         } catch (err) {
