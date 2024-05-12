@@ -111,7 +111,7 @@ const MenuUser = () => {
                             },
                         ]}
                     >
-                        <InputNumber className='w-[100%]' value={money} onChange={setMoney} placeholder='Tối thiểu 50000' defaultValue={100000} addonAfter="đ" min={0} />
+                        <InputNumber className='w-[100%]' value={money} onChange={setMoney} placeholder='Tối thiểu 15000' addonAfter="đ" min={0} />
                     </Form.Item>
                 </Form>
             </Modal>

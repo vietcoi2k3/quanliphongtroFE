@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import AuthApi from './api/AuthApi';
 
 // Tạo context cho việc quản lý trạng thái xác thực
 const AuthContext = createContext(null);
@@ -11,18 +12,20 @@ export const AuthProvider = ({ children }) => {
     // Sử dụng useState để lưu trữ trạng thái xác thực
     const [auth, setAuth] = useState(false);
 
-
-    useEffect(() => {
-        // Kiểm tra xem có access token được lưu trong localStorage không
-        console.log("hello")
-        const accessToken = localStorage.getItem('access_token');
-        // Lấy thông tin người dùng từ localStorage
-        const user = JSON.parse(localStorage.getItem('user'));;
-        
+    // Sử dụng useEffect để kiểm tra trạng thái xác thực khi ứng dụng được tải lần đầu
+    const fetchUser = async( ) => {
+        try{
+            let user = await AuthApi.getUser()
         // Nếu có thông tin người dùng, cập nhật trạng thái xác thực với thông tin người dùng
         if(user){
             setAuth(user)
         }
+        }catch(err){
+            console.log(res)
+        }
+    }
+    useEffect(() => {
+        fetchUser()
     }, []);
 
 
