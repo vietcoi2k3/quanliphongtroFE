@@ -6,6 +6,7 @@ import ProvinceApi from '../../api/ProvinceApi';
 import MotelApi from '../../api/MotelApi';
 import { useForm } from 'antd/lib/form/Form';
 import { useAuth } from '../../AuthContext';
+import AuthApi from '../../api/AuthApi';
 
 // Xử lý khi form submit thất bại
 const onFinishFailed = (errorInfo) => {
@@ -54,7 +55,7 @@ const province = [
   },
 ]
 
-const PostNews = ({ id }) => {
+const PostNews = ({ id, setDataSource }) => {
   const [form] = useForm();
   const { auth } = useAuth()
   // Hàm để chuyển đổi ID tỉnh/thành phố sang mã số tỉnh/thành phố
@@ -172,6 +173,8 @@ const PostNews = ({ id }) => {
       if (id) {
         formData.append('id', id);
         let response = await MotelApi.updateMotel(formData)
+        let data = await AuthApi.getListUserMotel({ pageIndex: 0, pageSize: 10 })
+        setDataSource(data)
         messageApi.open({
           type: 'success',
           content: 'Sửa thành công',

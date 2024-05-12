@@ -70,7 +70,10 @@ const ManagePostings = () => {
         try {
             setLoading(true)
             await MotelApi.deleteMotel(key)
-            const newData = dataSource.filter((item) => item.id !== key);
+            const newData = dataSource.filter((item) => {
+                return item.id !== key
+            });
+            setDataSourceFilter(newData)
             setDataSource(newData);
             setLoading(false)
         } catch (err) {
@@ -188,7 +191,7 @@ const ManagePostings = () => {
     return (
         <div className='manage-postings-container'>
             <Modal title="Sửa bài đăng" width={600} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
-                <PostNews id={idMotelEdit} />
+                <PostNews id={idMotelEdit} setDataSource={setDataSource} />
             </Modal>
             {/* Ô tìm kiếm và dropdown lọc */}
             <Space wrap>

@@ -45,7 +45,7 @@ function App() {
             {/* Route cho người dùng đã đăng nhập*/}
             <Route path="/user" element={<PrivateRoute component={MenuUser} />}>
               <Route path="quan-ly-tin" element={<ManagePostings />} />
-              <Route path="dang-tin-moi" element={<PostNews id='' />} />
+              <Route path="dang-tin-moi" element={<PostNews id='' setDataSource='' />} />
               <Route path="thong-tin-ca-nhan" element={<PersonalInformation />} />
               <Route path="doi-mat-khau" element={<ChangePassword />} />
               <Route path="nap-tai-khoan-thanh-cong" element={<RechargeSuccess />} />
