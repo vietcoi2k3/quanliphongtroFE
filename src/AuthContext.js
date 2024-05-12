@@ -13,15 +13,16 @@ export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(false);
 
     // Sử dụng useEffect để kiểm tra trạng thái xác thực khi ứng dụng được tải lần đầu
-    const fetchUser = async( ) => {
-        try{
+    const fetchUser = async () => {
+        try {
             let user = await AuthApi.getUser()
-        // Nếu có thông tin người dùng, cập nhật trạng thái xác thực với thông tin người dùng
-        if(user){
-            setAuth(user)
-        }
-        }catch(err){
-            console.log(res)
+            // Nếu có thông tin người dùng, cập nhật trạng thái xác thực với thông tin người dùng
+            console.log({user})
+            if (user) {
+                setAuth(user)
+            }
+        } catch (err) {
+            console.log(err)
         }
     }
     useEffect(() => {

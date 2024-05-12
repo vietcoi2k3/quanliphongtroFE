@@ -57,6 +57,11 @@ const AuthApi = {
   vnPay: (money) => {
     const url =  `/auth/payment/vn-pay?amount=${money}`
     return axiosClient.get(url)
+  },
+  // Api thanh toán qua VNPAY trả về 
+  vnPayReturn: (query) => {
+    const url =  `/auth/payment/vn-return?${query}`
+    return axiosClient.get(url)
   }
 };
 
