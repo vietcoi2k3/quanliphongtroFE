@@ -98,7 +98,7 @@ const ChangePassword = () => {
                 </Form.Item>
                 {/* Nút submit để thực hiện thay đổi mật khẩu */}
                 <Form.Item className="my-4">
-                    <Button type="primary" style={{ width: '100%' }} htmlType="submit" className='btn-submit'>
+                    <Button type="primary" style={{ width: '100%', backgroundColor:'#ff0000' }} htmlType="submit" className='btn-submit'>
                         Cập nhật
                     </Button>
                 </Form.Item>

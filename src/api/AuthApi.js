@@ -48,6 +48,11 @@ const AuthApi = {
     const url = `/auth/forgot-email?username=${username}`
     return axiosClient.get(url)
   },
+  // Api lấy thông tin người dùng
+  getUser: () => {
+    const url = `/user/get-user`
+    return axiosClient.get(url)
+  },
   // Api thanh toán qua VNPAY
   vnPay: (money) => {
     const url =  `/auth/payment/vn-pay?amount=${money}`

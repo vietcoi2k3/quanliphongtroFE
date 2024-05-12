@@ -5,7 +5,7 @@ import ModalFilter from "./ModalFilter";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../../AuthContext'
 import Logo from '../../assets/logo.jpg'
-import { Space } from "antd";
+import { Space, Avatar } from "antd";
 // Danh sách các bộ lọc
 const filters = [
   {
@@ -313,8 +313,8 @@ const Header = () => {
           </Space>
         </div>
         <Space>
-          <div className="listItem">
-            <i className="fa-regular fa-bell"></i>
+          <div className="cursor-pointer">
+            <Avatar size={50} src={auth.imgReturn} onClick={() => navigate('/user/thong-tin-ca-nhan')}/>
           </div>
           {auth ? <div className="listItem flex">
             <AppstoreOutlined className="text-[25px]" />
@@ -338,7 +338,7 @@ const Header = () => {
             className="px-[10px] py-[5px] bg-[var(--red-color-)] text-white rounded-lg"
           >
             <i className="fa-regular fa-pen-to-square"></i>
-            <a href="" className="mx-1.5 text-[14px]" onClick={() => navigate('/user/quan-ly-tin')}>
+            <a href="" className="mx-1.5 text-[14px]" onClick={() => navigate('/user/dang-tin-moi')}>
               Đăng tin
             </a>
           </div>

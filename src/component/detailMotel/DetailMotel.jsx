@@ -15,7 +15,7 @@ const DetailMotel = () => {
     try {
       window.scrollTo({
         top: 0,
-        behavior: "smooth" 
+        behavior: "smooth"
       });
       setLoading(true)
       if (idMotel) {
@@ -32,16 +32,16 @@ const DetailMotel = () => {
           "pageSize": 8,
           "pageIndex": 1
         }
-        console.log({data})
+        console.log({ data })
         // Lấy danh sách nhà trọ cùng khu vực
         const dataSameArea = await MotelApi.paingMotel(query)
         // Lưu danh sách nhà trọ cùng khu vực vào state
         setDataMotelSameArea(dataSameArea.motelDTOList)
-         // Lưu thông tin chi tiết của nhà trọ vào state
+        // Lưu thông tin chi tiết của nhà trọ vào state
         setDataMotel(data)
       }
       setLoading(false)
-      
+
     } catch (err) {
       setLoading(false)
       console.log(err)
@@ -52,10 +52,19 @@ const DetailMotel = () => {
   useEffect(() => {
     fetchData()
   }, [idMotel])
+  //Điều hướng đến trang zalo số điện thoại của người dùng
+  const handlePhoneClick = (phoneNumber) => {
+    if(phoneNumber){
+       window.open(`https://zalo.me/${phoneNumber}`, '_blank')
+    }else{
+       window.open(`https://zalo.me/0562314568`, '_blank')
+
+    }
+  };
   return (
     <div className='detail-motel-container'>
       <Spin spinning={loading}> {/* Hiển thị spin khi đang loading */}
-       {/* Phần chi tiết của Motel */}
+        {/* Phần chi tiết của Motel */}
         <Row gutter={16}>
           <Col span={16}>
             <Card bordered={false}>
@@ -82,7 +91,7 @@ const DetailMotel = () => {
                     <Divider type='vertical' className='h-[100%]' />
                   </Col>
                   <Col span={6} className='flex justify-between'>
-                    <Statistic title="Ngày hết hạn" value={dataMotel?.dateExpried ||'08/05/2024'} />
+                    <Statistic title="Ngày hết hạn" value={dataMotel?.dateExpried || '08/05/2024'} />
                     <Divider type='vertical' className='h-[100%]' />
                   </Col>
                   <Col span={6} className='flex justify-between'>
@@ -112,9 +121,9 @@ const DetailMotel = () => {
               <Button className='w-[100%] mb-1 bg-[#F2F8FE] text-[#0d6efd]' icon={<MessageOutlined />}>
                 Nhắn zalo
               </Button>
-              <Button className='w-[100%] ' type="primary" icon={<PhoneOutlined />}>
-              {dataMotel?.phoneNumber || ' 0562314568'}
-               
+              <Button className='w-[100%] ' onClick={() =>handlePhoneClick(dataMotel?.phoneNumber)} type="primary" icon={<PhoneOutlined />}>
+                {dataMotel?.phoneNumber || ' 0562314568'}
+
               </Button>
             </Card>
           </Col>

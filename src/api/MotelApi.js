@@ -21,7 +21,12 @@ const MotelApi = {
   deleteMotel(id) {
     const url = `/user/delete-motel?id=${id}`
     return axiosClient.delete(url, id)
-  }
+  },
+  updateMotel(data) {
+    const url= '/user/update-motel';
+    return axiosClient.put(url, data);
+  },
+  // Xoá nhà trọ bằng id
 };
 
 export default MotelApi; // Xuất object MotelApi

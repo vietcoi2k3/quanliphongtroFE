@@ -28,7 +28,10 @@ const Login = () => {
                 setCheckEmail(true);
             }
             setLoading(false)
-
+            setTimeout(()=>{
+                setCheckEmail(false);
+                setIsModalOpen(false)
+            }, 2000);
         } catch (err) {
             setLoading(false)
 

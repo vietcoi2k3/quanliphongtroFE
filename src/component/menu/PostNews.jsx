@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Form, Input, Upload, Select, Row, Col, InputNumber, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, Upload, Select, Row, Col, InputNumber, message, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import ProvinceApi from '../../api/ProvinceApi';
@@ -54,18 +54,25 @@ const province = [
   },
 ]
 
-const PostNews = () => {
+const PostNews = ({ id }) => {
   const [form] = useForm();
-  const { auth, setAuth } = useAuth()
-
+  const {auth} = useAuth()
   // Hàm để chuyển đổi ID tỉnh/thành phố sang mã số tỉnh/thành phố
   const configIDCity = (oldId) => {
     if (oldId === "01") {
       return 1
     } else if (oldId === "79") {
       return 2
-    } else {
+    } else if (oldId === "48") {
       return 3
+    } else if (oldId === 1) {
+      return '01'
+    } else if (oldId === 2) {
+      return '79'
+    } else if (oldId === 3) {
+      return '48'
+    } else {
+      return 0
     }
   }
 
@@ -77,7 +84,6 @@ const PostNews = () => {
   const navigate = useNavigate()
 
   // State để lưu trữ giá trị hiện tại của quận/huyện được chọn
-  const [districtValue, setDistrictValue] = useState(null)
 
   // State để quản lý trạng thái loading và hiển thị thông báo
   const [loading, setLoading] = useState(false)
@@ -92,6 +98,52 @@ const PostNews = () => {
     "district": '',
     "ward": ''
   })
+  const fetchDataMotel = async () => {
+    try {
+      setLoading(true)
+      let data = await MotelApi.getMotelById(id)
+      console.log(data)
+      form.setFieldsValue(data)
+      let addressArray = data.address.split(' - ')
+      let idProvince = configIDCity(data.cityId)
+      let districts = await ProvinceApi.getDistrictByProvince(idProvince)
+      let district = districts.data.results.find(item => item.district_name === addressArray[1])
+      setDistricts(districts.data.results)
+      let wards = await ProvinceApi.getWardByDistrict(district.district_id)
+      let ward = wards.data.results.find(item => item.ward_name === addressArray[2])
+      setWard(wards.data.results)
+      form.setFieldsValue({ province: idProvince, district: district.district_id, ward: ward.ward_id, street: addressArray[3], typeMotelID: data.typeMotel });
+      urlToBlob(data.motelImage)
+        .then(blob => {
+          // Tạo một đối tượng File từ Blob
+          const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+          setImg(file)
+        })
+        .catch(error => {
+          console.error('Đã xảy ra lỗi khi tải và xử lý ảnh:', error);
+        });
+      setLoading(false)
+
+
+    } catch (err) {
+      setLoading(false)
+      console.log({ err })
+    }
+  }
+  async function urlToBlob(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.blob();
+  }
+
+  useEffect(() => {
+    console.log({ id })
+    if (id) {
+      fetchDataMotel()
+    }
+  }, [id])
 
   // Hàm chuyển đổi file ảnh
   const normFile = (e) => {
@@ -117,14 +169,22 @@ const PostNews = () => {
       formData.append("typeMotelID", typeMotelID);
       formData.append("cityEntityID", configIDCity(province));
       formData.append('motelImage', img);
-      
-      let response = await MotelApi.addMotel(formData)
+      if (id) {
+        formData.append('id', id);
+        let response = await MotelApi.updateMotel(formData)
+        messageApi.open({
+          type: 'success',
+          content: 'Sửa thành công',
+        });
+      }else{
+        let response = await MotelApi.addMotel(formData)
+        messageApi.open({
+          type: 'success',
+          content: 'Thêm thành công',
+        });
+      }
       setLoading(false)
 
-      messageApi.open({
-        type: 'success',
-        content: 'Thêm thành công',
-      });
 
     } catch (err) {
       console.log(err)
@@ -174,9 +234,6 @@ const PostNews = () => {
         form={form}
         name="basic"
         disabled={loading}
-        initialValues={{
-          remember: true,
-        }}
         labelCol={{ span: 16 }}
         wrapperCol={{ span: 32 }}
         layout="vertical"
@@ -204,7 +261,7 @@ const PostNews = () => {
               name="district"
               rules={[{ required: true, message: 'Vui lòng chọn quận/huyện' }]}
             >
-              <Select value={districtValue} placeholder='Chọn quận/huyện' style={{ width: '100%' }} options={districts.map(item => ({ value: item.district_id, label: item.district_name }))} onChange={(e) => handleChangeSelect('district', e)} />
+              <Select placeholder='Chọn quận/huyện' style={{ width: '100%' }} options={districts.map(item => ({ value: item.district_id, label: item.district_name }))} onChange={(e) => handleChangeSelect('district', e)} />
             </Form.Item>
           </Col>
         </Row>

@@ -12,16 +12,13 @@ export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(false);
 
     // Sử dụng useEffect để kiểm tra trạng thái xác thực khi ứng dụng được tải lần đầu
+
     useEffect(() => {
         // Kiểm tra xem có access token được lưu trong localStorage không
+        console.log("hello")
         const accessToken = localStorage.getItem('access_token');
         // Lấy thông tin người dùng từ localStorage
         const user = JSON.parse(localStorage.getItem('user'));;
-        
-        // Nếu có access token, đánh dấu người dùng đã xác thực
-        if (accessToken) {
-            // setAuth(true);
-        }
         
         // Nếu có thông tin người dùng, cập nhật trạng thái xác thực với thông tin người dùng
         if(user){

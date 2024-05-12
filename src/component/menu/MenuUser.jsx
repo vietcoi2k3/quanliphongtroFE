@@ -72,9 +72,11 @@ const MenuUser = () => {
     // Xử lý gửi yêu cầu nạp tiền
     const onFinish = async () => {
         try {
-            const { accountName, phoneNumber, email, img, imgReturn } = auth
             let response = await AuthApi.vnPay(money)
-            navigate('nap-tai-khoan-thanh-cong')
+            console.log(response)
+            if(response.code === "ok"){
+                navigate(`/${response.paymentUrl}`)
+            }
             setIsModalOpen(false)
         } catch (err) {
             setIsModalOpen(false)

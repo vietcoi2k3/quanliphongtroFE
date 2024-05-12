@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Space, Select, Table, Popconfirm } from 'antd';
+import { Input, Space, Select, Table, Popconfirm, Modal } from 'antd';
 import AuthApi from '../../api/AuthApi';
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import MotelApi from '../../api/MotelApi';
-
+import PostNews from './PostNews'
 const { Search } = Input;
 const { Option } = Select;
 
@@ -29,19 +29,18 @@ const optionsDefault = [
 const ManagePostings = () => {
     // Hàm xử lý tìm kiếm bài đăng
     const onSearch = (value, _e) => {
-        if(value == ""){
-            setDataSourceFilter(dataSource)
-        }else{
-            let searchedData = dataSource.filter(item => (item.title.toLowerCase().includes(value.toLowerCase())  || (item.description.toLowerCase().includes(value.toLowerCase()))))
-            setDataSourceFilter(searchedData)
-        }
+        setSearchValue(value)
+
     }
 
     // Các biến state và hàm state
-    const [options, setOptions] = useState(optionsDefault)
     const [dataSource, setDataSource] = useState([])
     const [dataSourceFilter, setDataSourceFilter] = useState([])
-
+    const [searchValue, setSearchValue] = useState('')
+    const [newsType, setNewsType] = useState(0)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [idMotelEdit, setIdMotelEdit] = useState('')
+    const [loading, setLoading] = useState(false)
     // Dữ liệu về loại nhà đất
     const loaiNhaDat = [
         {
@@ -69,10 +68,13 @@ const ManagePostings = () => {
     // Xử lý xóa bài đăng
     const handleDelete = async (key) => {
         try {
+            setLoading(true)
             await MotelApi.deleteMotel(key)
             const newData = dataSource.filter((item) => item.id !== key);
             setDataSource(newData);
+            setLoading(false)
         } catch (err) {
+            setLoading(false)
             console.log(err)
         }
     };
@@ -80,36 +82,42 @@ const ManagePostings = () => {
     // Lấy dữ liệu từ API khi trang được tải
     const fechData = async () => {
         try {
+            setLoading(true)
             let data = await AuthApi.getListUserMotel({ pageIndex: 0, pageSize: 10 })
             setDataSource(data)
+            setLoading(false)
+            setDataSourceFilter(data)
         } catch (err) {
+            setLoading(false)
             console.log(err)
         }
     }
-    
+
     useEffect(() => {
         fechData()
     }, [])
 
     // Xử lý thay đổi loại tin đăng
     const handleChangeNewsType = (id) => {
-        if(id==0){
-            setDataSourceFilter(dataSource)
-        }else{
-            let filterdata = dataSource.filter(item => item.typeMotelID === id)
-            setDataSourceFilter(filterdata)
-        }
+        setNewsType(id)
+
     };
 
-    // Cập nhật lại bộ lọc khi dữ liệu thay đổi
-    useEffect(()=>{
-        setDataSourceFilter(dataSource)
-    },[dataSource])
-
-    // Xử lý sự kiện khi người dùng chọn tùy chọn
-    const clickBtnOption = (name) => {
-        setOptions(prev => prev.map(item => item.name === name ? { ...item, checked: true } : { ...item, checked: false }))
-    }
+    useEffect(() => {
+        let newDataFiltered = dataSource
+        if (searchValue !== "") {
+            // Lọc ra dữ liệu khi tìm kiếm
+            newDataFiltered = newDataFiltered.filter(item => (item.title.toLowerCase().includes(searchValue.toLowerCase().trim()) || (item.description.toLowerCase().includes(searchValue.toLowerCase().trim()))))
+        } 
+        if (newsType !== 0) {
+            // Lọc ra dữ liệu khi lọc theo loại tin
+            console.log({newsType})
+            newDataFiltered = newDataFiltered.filter(item => item.typeMotelID === newsType)
+        }
+        console.log({newsType})
+        setDataSourceFilter(newDataFiltered)
+        console.log({ newDataFiltered })
+    }, [searchValue, newsType])
 
 
     // Các cột trong bảng
@@ -159,16 +167,29 @@ const ManagePostings = () => {
             fixed: 'right',
             width: 120,
             render: (_, record) =>
-                dataSource.length >= 1 ? (
+                dataSource.length >= 1 ? (<div className='flex justify-around'>
                     <Popconfirm title="Sure to delete?" style={{ textAlign: 'center' }} onConfirm={() => handleDelete(record.id)}>
                         <DeleteOutlined style={{ color: 'red' }} />
                     </Popconfirm>
-                ) : null,
+                    <EditOutlined onClick={() => handleOpenModalEdit(record.id)} />
+                </div>) : null,
         },
     ];
 
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleOpenModalEdit = (id) => {
+        setIdMotelEdit(id)
+        setIsModalOpen(true);
+    }
     return (
         <div className='manage-postings-container'>
+            <Modal title="Sửa bài đăng" width={600} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
+                <PostNews id={idMotelEdit} />
+            </Modal>
             {/* Ô tìm kiếm và dropdown lọc */}
             <Space wrap>
                 <Search
@@ -188,7 +209,7 @@ const ManagePostings = () => {
             </Space>
 
             {/* Bảng hiển thị dữ liệu */}
-            <Table columns={columns} className='pt-4' dataSource={dataSourceFilter} scroll={{ x: 1300 }} />
+            <Table columns={columns} loading={loading} className='pt-4' dataSource={dataSourceFilter} scroll={{ x: 1300 }} />
         </div>
     )
 }

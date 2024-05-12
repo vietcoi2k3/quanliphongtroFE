@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 import { useAuth } from '../../AuthContext';
 import AuthApi from '../../api/AuthApi';
-
+import { useForm } from 'antd/lib/form/Form';
 // Xử lý khi form submit thất bại
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
@@ -14,12 +14,12 @@ const onFinishFailed = (errorInfo) => {
 
 // Component Thông tin cá nhân
 const PersonalInformation = () => {
-
+  const [form] = useForm();
   const [loading, setLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage(); // Hook message để hiển thị thông báo
 
   const { auth, setAuth } = useAuth() // Hook useAuth để lấy thông tin người dùng và cập nhật thông tin người dùng
-  const [img, setImg] = useState() // Trạng thái lưu trữ file ảnh người dùng
+  const [img, setImg] = useState(null) // Trạng thái lưu trữ file ảnh người dùng
   const navigate = useNavigate() // Hook navigate để chuyển hướng trang
 
   // Hàm xử lý khi người dùng chọn file ảnh
@@ -54,16 +54,32 @@ const PersonalInformation = () => {
     } catch (err) {
       setLoading(false)
       messageApi.open({
-        type: 'error',
+        type: 'error',  
         content: 'Cập nhật thất bại',
       }); // Hiển thị thông báo thất bại
 
       console.log({ err }) // Log lỗi ra console
     }
   };
+  async function urlToBlob(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.blob();
+  }
+
   useEffect(() => {
     if (auth.imgReturn) {
-      setImg(auth.imgReturn)
+      urlToBlob(auth.imgReturn)
+        .then(blob => {
+          // Tạo một đối tượng File từ Blob
+          const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+          setImg(file)
+        })  
+        .catch(error => {
+          console.error('Đã xảy ra lỗi khi tải và xử lý ảnh:', error);
+        });
     }
   }, [])
   return (<>
@@ -163,7 +179,7 @@ const PersonalInformation = () => {
           </Upload>
         </Form.Item>
         <Form.Item className="my-4">
-          <Button loading={loading} type="primary" style={{ width: '100%' }} htmlType="submit" className='btn-submit'>
+          <Button loading={loading} type="primary" style={{ width: '100%', backgroundColor:'#ff0000' }} htmlType="submit" className='btn-submit'>
             Cập nhật
           </Button>
         </Form.Item>
