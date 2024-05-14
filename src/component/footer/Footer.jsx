@@ -48,7 +48,7 @@ const Footer = () => {
             <a href="/quy-dinh-su-dung">Quy định sử dụng</a>
           </li>
           <li>
-            <a href="">Liên hệ</a>
+            <a href="https://www.facebook.com/ducboss.1902">Liên hệ</a>
           </li>
         </ul>
       </div>

@@ -304,7 +304,7 @@ const Header = () => {
         className="section-1 flex justify-between py-2.5 px-8 border-b-[1px]"
       >
         <div className="flex">
-          <div onClick={() => navigate('/')}><img className="w-[auto] h-[50px] cursor-pointer" src={Logo} /></div>
+      {<div onClick={() => navigate('/')}><img className="w-[auto] h-[50px] cursor-pointer" src={Logo} /></div>}
           <Space>
             <div className="listItem" onClick={() => navigate(`/listMotel?lnd=1&kv=0&kg=0-0&dt=0-0`)}>Cho thuê phòng trọ</div>
             <div className="listItem" onClick={() => navigate(`/listMotel?lnd=2&kv=0&kg=0-0&dt=0-0`)}>Cho thuê căn hộ</div>
@@ -313,9 +313,9 @@ const Header = () => {
           </Space>
         </div>
         <Space>
-          <div className="cursor-pointer">
-            <Avatar size={50} src={auth.imgReturn} onClick={() => navigate('/user/thong-tin-ca-nhan')}/>
-          </div>
+        <div className="cursor-pointer">
+          {auth&&<Avatar size={50} src={auth.imgReturn} onClick={() => navigate('/user/thong-tin-ca-nhan')}/>}
+        </div>
           {auth ? <div className="listItem flex">
             <AppstoreOutlined className="text-[25px]" />
             <a href="" className="mx-1.5" onClick={() => navigate('/user/quan-ly-tin')}>

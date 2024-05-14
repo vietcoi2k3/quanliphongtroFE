@@ -57,7 +57,8 @@ const province = [
 
 const PostNews = ({ id, setDataSource }) => {
   const [form] = useForm();
-  const { auth } = useAuth()
+  const { auth,setAuth } = useAuth()
+  
   // Hàm để chuyển đổi ID tỉnh/thành phố sang mã số tỉnh/thành phố
   const configIDCity = (oldId) => {
     if (oldId === "01") {
@@ -196,6 +197,7 @@ const PostNews = ({ id, setDataSource }) => {
           });
         } else {
           let response = await MotelApi.addMotel(formData)
+          setAuth({ ...auth,money:auth.money-15000 }) // Cập nhật thông tin người dùng trong trạng thái local
           messageApi.open({
             type: 'success',
             content: 'Thêm thành công',
@@ -389,7 +391,7 @@ const PostNews = ({ id, setDataSource }) => {
         {/* Nút submit */}
         <Form.Item className="my-4">
           <Button type="primary" loading={loading} style={{ width: '100%' }} htmlType="submit" className='btn-submit'>
-            Đăng tin và thanh toán
+            Đăng tin và thanh toán (15000VND/tin)
           </Button>
         </Form.Item>
       </Form>
