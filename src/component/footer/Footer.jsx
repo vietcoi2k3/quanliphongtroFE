@@ -55,8 +55,7 @@ const Footer = () => {
       <div class="grid-cols-4">
         <h3 class="text-left text-amber-300 py-4 font-bold text-[15px]">Hỗ trợ</h3>
         <ul class="list-none text-left">
-          <li>Hướng dẫn đăng tin</li>
-          <li>Quy định đăng tin</li>
+          <li><a href="/quy-dinh-dang-tin">Quy định đăng tin</a></li>
           <li>Cơ chế giải quyết tranh chấp</li>
           <li>Tin tức</li>
         </ul>

@@ -23,6 +23,7 @@ import Quydinh from "./component/footer/Quydinh";
 import Gioithieu from "./component/footer/Gioithieu";
 import Quyche from "./component/footer/Quyche";
 import Chinhsach from "./component/footer/Chinhsach";
+import QuyDinhDangTin from "./component/footer/QuyDinhDangTin";
 function App() {
   return (
     // Sử dụng ConfigProvider của Ant Design để cấu hình theme
@@ -49,6 +50,7 @@ function App() {
               <Route path="/quy-che-hoat-dong" element={<Quyche />} />
               <Route path="/chinh-sach-bao-mat" element={<Chinhsach />} />
               <Route path="/quy-dinh-su-dung" element={<Quydinh />} />
+              <Route path="/quy-dinh-dang-tin" element={<QuyDinhDangTin />} />
             </Route>
             {/* Route cho người dùng đã đăng nhập*/}
             <Route path="/user" element={<PrivateRoute component={MenuUser} />}>
