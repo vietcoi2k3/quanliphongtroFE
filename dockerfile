@@ -1,14 +1,20 @@
-FROM node:18-alpine
+# Sử dụng hình ảnh Node.js phiên bản 14.17 chính thức
+FROM node:14.17
 
-RUN mkdir /app
-COPY package*.json /app
+# Thiết lập thư mục làm việc trong container
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# Sao chép file package.json và package-lock.json vào thư mục làm việc
+COPY package*.json ./
 
-RUN npm install && yarn install
+# Cài đặt các phụ thuộc của ứng dụng
+RUN npm install
 
+# Sao chép mã nguồn của ứng dụng vào thư mục làm việc
 COPY . .
 
+# Expose cổng mà ứng dụng sẽ chạy
 EXPOSE 3003
 
+# Lệnh để chạy ứng dụng
 CMD ["npm", "start"]
